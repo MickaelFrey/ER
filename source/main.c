@@ -17,13 +17,10 @@ int main(void) {
 
 	state state = MenuStart;
 
-	configure_Room1();
-	printf("Exercise 2\n");
-
 	while(true) {
 		switch(state){
 		case MenuStart:{
-			//configure_MenuStart();
+			configure_MenuStart();
 			is_solved = play_MenuStart();
 
 			if(is_solved == 1) state = Room1;
@@ -31,21 +28,20 @@ int main(void) {
 		}
 		case Room1:{
 			configure_Room1();
-			printf("Exercise 2\n");
 			is_solved = play_Room1();
 
 			if(is_solved == 1) state = Room2;
 			break;
 		}
 		case Room2:{
-			//configure_Room2();
+			configure_Room2();
 			is_solved = play_Room2();
 
 			if(is_solved == 1) state = MenuEnd;
 			break;
 		}
 		case MenuEnd:{
-			//configure_MenuEnd();
+			configure_MenuEnd();
 			is_solved = play_MenuEnd();
 
 			if(is_solved == 1) state = MenuStart;
