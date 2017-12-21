@@ -6,7 +6,7 @@ void configure_MenuStart();
 /*
  * Configure the graphics settings for the Room1
  */
-void configure_Room1();
+void configure_room1_gfx();
 
 /*
  * Configure the graphics settings for the Room2

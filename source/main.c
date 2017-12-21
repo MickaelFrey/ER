@@ -3,7 +3,6 @@
 #include "Graphics.h"
 #include "Game.h"
 
-
 // Parameters
 //#define ...
 
@@ -14,6 +13,7 @@ int is_solved = 0;
 //------------------------------------------------------------------------------
 int main(void) {
 //------------------------------------------------------------------------------
+
 
 	state state = MenuStart;
 
@@ -27,7 +27,7 @@ int main(void) {
 			break;
 		}
 		case Room1:{
-			configure_Room1();
+			configure_room1_gfx();
 			is_solved = play_Room1();
 
 			if(is_solved == 1) state = Room2;
