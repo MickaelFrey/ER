@@ -51,6 +51,7 @@ int main(void) {
 		}	// End of switch
 		is_solved = 0;
 
+		swiWaitForVBlank();
 	}	// End of while
 
 	return 0;

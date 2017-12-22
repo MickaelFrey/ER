@@ -29,7 +29,7 @@ void configure_room1_gfx(){
 
 	/*
 	 * Sub engine:
-	 * background_room1, 64x48 tiles + palette 256 entries (8 bit/px) + map
+	 * background_room1, 64x64 tiles + palette 256 entries (8 bit/px) + map
 	 */
 
 	// Activate sub engine and background 0 in tiled mode using 64x64 map
@@ -41,8 +41,8 @@ void configure_room1_gfx(){
 	swiCopy(background_room1Tiles, BG_TILE_RAM_SUB(1), background_room1TilesLen/2);
 	swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
 
-	// Copy map to the map base(s): As the used map is 3 times a standard one,
-	// we will need 3 map bases (i.e. 64x48 components * 16 bits = 6 KB)
+	// Copy map to the map base(s): As the used map is 4 times a standard one,
+	// we will need 4 map bases (i.e. 64x64 components * 16 bits = 8 KB)
 
 	// TOP LEFT quadrant of the image in first map base
 	int i;
@@ -50,16 +50,16 @@ void configure_room1_gfx(){
 		dmaCopy(&background_room1Map[i*64], &BG_MAP_RAM_SUB(0)[i*32], 64);
 
 	// TOP RIGHT quadrant of the image in second map base
-	//for(i=0; i<32; i++)
-		//dmaCopy(&background_room1Map[i*64+32], &BG_MAP_RAM_SUB(1)[i*32], 64);
+	for(i=0; i<32; i++)
+		dmaCopy(&background_room1Map[i*64+32], &BG_MAP_RAM_SUB(1)[i*32], 64);
 
 	// BOTTOM LEFT quadrant of the image in third map base
-	//for(i=0; i<32; i++)
-		//dmaCopy(&background_room1Map[(i+32)*64], &BG_MAP_RAM_SUB(2)[i*32], 64);
+	for(i=0; i<32; i++)
+		dmaCopy(&background_room1Map[(i+32)*64], &BG_MAP_RAM_SUB(2)[i*32], 64);
 
 	// BOTTOM RIGHT quadrant of the image in fourth map base
-	//for(i=0; i<32; i++)
-		//dmaCopy(&background_room1Map[(i+32)*64+32], &BG_MAP_RAM_SUB(3)[i*32], 64);
+	for(i=0; i<32; i++)
+		dmaCopy(&background_room1Map[(i+32)*64+32], &BG_MAP_RAM_SUB(3)[i*32], 64);
 
 }
 
