@@ -17,3 +17,9 @@ void configure_Room2();
  * Configure the graphics settings for the MenuEnd
  */
 void configure_MenuEnd();
+
+
+/*
+ * Scan the key and shift the background image
+ */
+void update_bg_shift();

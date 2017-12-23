@@ -60,7 +60,6 @@ void configure_room1_gfx(){
 	// BOTTOM RIGHT quadrant of the image in fourth map base
 	for(i=0; i<32; i++)
 		dmaCopy(&background_room1Map[(i+32)*64+32], &BG_MAP_RAM_SUB(3)[i*32], 64);
-
 }
 
 /*
@@ -76,3 +75,62 @@ void configure_Room2(){
 void configure_MenuEnd(){
 	//...
 }
+
+
+/*
+ * Scan the key and shift the background image
+ */
+void update_bg_shift(){
+	// Declare bg shift variable only once in static (non blocking function)
+	static int  bg_h, bg_v;
+	int view_speed = 10;
+
+	//Scan the keys
+	scanKeys();
+
+	//Identify which key was pressed and print it in the console
+	u16 keys = keysHeld();
+
+	// Assign shift registers (they are not readable!)
+	REG_BG0HOFS_SUB = bg_h;
+	REG_BG0VOFS_SUB = bg_v;
+
+	//Update local variables that track the shifting
+	if(keys & KEY_DOWN){
+		//shifting vertically from down to up
+		bg_v+=view_speed;
+	}
+	if(keys & KEY_LEFT){
+		//shifting horizontally from left to right
+		bg_h-=view_speed;
+	}
+	if(keys & KEY_UP){
+		//shifting vertically from up to down
+		bg_v-=view_speed;
+	}
+	if(keys & KEY_RIGHT){
+		//shifting horizontally from right to left
+		bg_h+=view_speed;
+	}
+	// Limit the shift according to the size of the background
+	if(bg_h < 0) 	bg_h = 0;
+	if(bg_h > 255)	bg_h = 255;
+	if(bg_v < 0) 	bg_v = 0;
+	if(bg_v > 319)	bg_v = 319;
+
+
+
+
+
+	typedef enum{radio}object;
+
+	//Declare a touchPosition variable
+	touchPosition touch;
+	//Read the touchscreen
+	touchRead(&touch);
+	//Identify a valid touched coordinates and print them
+	if(touch.px | touch.py){
+
+	}
+}
+
