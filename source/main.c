@@ -14,7 +14,6 @@ int is_solved = 0;
 int main(void) {
 //------------------------------------------------------------------------------
 
-
 	state state = MenuStart;
 
 	while(true) {

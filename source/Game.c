@@ -21,6 +21,8 @@ int play_Room1(){
 	// Declare bg shift variable only once in static (non blocking function)
 	static int  bg_h, bg_v;
 
+	int speed = 5;
+
 	//Scan the keys
 	scanKeys();
 
@@ -34,19 +36,19 @@ int play_Room1(){
 	//Update local variables that track the shifting
 	if(keys & KEY_DOWN){
 		//shifting vertically from down to up
-		bg_v++;
+		bg_v+=speed;
 	}
 	if(keys & KEY_LEFT){
 		//shifting horizontally from left to right
-		bg_h--;
+		bg_h-=speed;;
 	}
 	if(keys & KEY_UP){
 		//shifting vertically from up to down
-		bg_v--;
+		bg_v-=speed;;
 	}
 	if(keys & KEY_RIGHT){
 		//shifting horizontally from right to left
-		bg_h++;
+		bg_h+=speed;;
 	}
 	// Limit the shift according to the size of the background
 	if(bg_h < 0) 	bg_h = 0;
