@@ -18,8 +18,3 @@ void configure_Room2();
  */
 void configure_MenuEnd();
 
-
-/*
- * Scan the key and shift the background image
- */
-void update_bg_shift();

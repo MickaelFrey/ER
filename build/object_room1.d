@@ -1,4 +1,4 @@
-Game.o: /home/nds/files/workspace/ER/source/Game.c \
+object_room1.o: /home/nds/files/workspace/ER/source/object_room1.c \
   /opt/devkitPro/libnds/include/nds.h \
   /opt/devkitPro/libnds/include/nds/libversion.h \
   /opt/devkitPro/libnds/include/nds/ndstypes.h \
@@ -47,9 +47,7 @@ Game.o: /home/nds/files/workspace/ER/source/Game.c \
   /opt/devkitPro/libnds/include/nds/arm9/sprite.h \
   /opt/devkitPro/libnds/include/nds/system.h \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
-  /home/nds/files/workspace/ER/source/Game.h \
-  /home/nds/files/workspace/ER/source/object_room1.h \
-  /home/nds/files/workspace/ER/source/Game_room1.h
+  /home/nds/files/workspace/ER/source/object_room1.h
 
 /opt/devkitPro/libnds/include/nds.h:
 
@@ -147,8 +145,4 @@ Game.o: /home/nds/files/workspace/ER/source/Game.c \
 
 /opt/devkitPro/libnds/include/nds/arm9/decompress.h:
 
-/home/nds/files/workspace/ER/source/Game.h:
-
 /home/nds/files/workspace/ER/source/object_room1.h:
-
-/home/nds/files/workspace/ER/source/Game_room1.h:

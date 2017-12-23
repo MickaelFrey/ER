@@ -18,35 +18,34 @@ int main(void) {
 
 	while(true) {
 		switch(state){
-		case MenuStart:{
-			configure_MenuStart();
-			is_solved = play_MenuStart();
+			case MenuStart:{
+				configure_MenuStart();
+				is_solved = play_MenuStart();
 
-			if(is_solved == 1) state = Room1;
-			break;
-		}
-		case Room1:{
-			configure_room1_gfx();
-			is_solved = play_Room1();
+				if(!is_solved) state = Room1;
+				break;
+			}
+			case Room1:{
+				configure_room1_gfx();
+				is_solved = play_Room1();
 
-			if(is_solved == 1) state = Room2;
-			break;
-		}
-		case Room2:{
-			configure_Room2();
-			is_solved = play_Room2();
+				if(!is_solved) state = Room2;
+				break;
+			}
+			case Room2:{
+				configure_Room2();
+				is_solved = play_Room2();
 
-			if(is_solved == 1) state = MenuEnd;
-			break;
-		}
-		case MenuEnd:{
-			configure_MenuEnd();
-			is_solved = play_MenuEnd();
+				if(!is_solved) state = MenuEnd;
+				break;
+			}
+			case MenuEnd:{
+				configure_MenuEnd();
+				is_solved = play_MenuEnd();
 
-			if(is_solved == 1) state = MenuStart;
-			break;
-		}
-
+				if(!is_solved) state = MenuStart;
+				break;
+			}
 		}	// End of switch
 		is_solved = 0;
 
