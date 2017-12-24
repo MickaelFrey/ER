@@ -1,6 +1,8 @@
 #include <nds.h>
 #include "Graphics.h"
 #include "background_room1.h"
+#include "background_room1_main.h"
+#include "zone.h"
 #include "object_room1.h"
 
 /*
@@ -25,8 +27,34 @@ void configure_room1_gfx(){
 	//Enable a proper RAM memory bank for the main engine
 	VRAM_A_CR = VRAM_ENABLE | VRAM_A_MAIN_BG;
 
-	//Configure the main engine in mode 0 (2D) and activate Backgrounds 3 and 0
-	REG_DISPCNT = MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG3_ACTIVE;
+	//Configure the main engine in mode 5 (2D) and activate Background 2
+	REG_DISPCNT = MODE_5_2D | DISPLAY_BG2_ACTIVE;
+
+
+	//Configure BG 2 Sub. (Do not forget the BG_BMP_BASE configuration)
+	BGCTRL[2] = BG_MAP_BASE(0) | BgSize_B8_256x256;
+
+	//Affine Marix Transformation
+	REG_BG2PA = 256;
+	REG_BG2PC = 0;
+	REG_BG2PB = 0;
+	REG_BG2PD = 256;
+
+	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
+	swiCopy(background_room1_mainBitmap, BG_GFX, background_room1_mainBitmapLen/2);
+
+	//Set up memory bank to work in sprite mode (offset since we are using VRAM A for backgrounds)
+	VRAM_B_CR = VRAM_ENABLE | VRAM_B_MAIN_SPRITE_0x06400000;
+
+	//Initialize sprite manager and the engine
+	oamInit(&oamMain, SpriteMapping_1D_64, false);
+
+	//Allocate space for the graphic to show in the sprite
+	gfx = oamAllocateGfx(&oamMain, SpriteSize_64x64, SpriteColorFormat_256Color);
+
+	//Copy data for the graphic (palette and bitmap)
+	swiCopy(zonePal, SPRITE_PALETTE, zonePalLen/2);
+	swiCopy(zoneTiles, gfx, zoneTilesLen/2);
 
 	/*
 	 * Sub engine:

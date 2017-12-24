@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "object_room1.h"
 #include "Game_room1.h"
+#include "Graphics.h"
 /*
  * Define the game corresponding to MenuStart
  */
@@ -17,8 +18,9 @@ int play_MenuStart(){
 int play_Room1(){
 
 	// Declare background shift variable
-	int  bg_h, bg_v;
-	int view_speed = 10;
+	int  bg_h=0, bg_v=0;
+	int x, y;
+	int view_speed = 2;
 	int i;
 	struct Object obj[NUM_OF_OBJECT];
 
@@ -57,6 +59,26 @@ int play_Room1(){
 		if(bg_h > 255)	bg_h = 255;
 		if(bg_v < 0) 	bg_v = 0;
 		if(bg_v > 319)	bg_v = 319;
+
+		x = 68+bg_h/4;
+		y = 24+bg_v/4;
+
+    	oamSet(&oamMain, 	// oam handler
+    		0,				// Number of sprite
+    		x, y,			// Coordinates
+    		0,				// Priority
+    		0,				// Palette to use
+    		SpriteSize_64x64,			// Sprite size
+    		SpriteColorFormat_256Color,	// Color format
+    		gfx,			// Loaded graphic to display
+    		-1,				// Affine rotation to use (-1 none)
+    		false,			// Double size if rotating
+    		false,			// Hide this sprite
+    		false, false,	// Horizontal or vertical flip
+    		false			// Mosaic
+    		);
+    	//Update the sprites
+		oamUpdate(&oamMain);
 
 		//Declare a touchPosition variable
 		touchPosition touch;
