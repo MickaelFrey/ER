@@ -1,3 +1,7 @@
+#ifndef GRAPHICS_H_
+#define GRAPHICS_H_
+
+
 
 #define SCREEN_WIDTH	256
 #define	SCREEN_HEIGHT	192
@@ -29,3 +33,4 @@ void configure_Room2();
  */
 void configure_MenuEnd();
 
+#endif /* GRAPHICS_H_ */

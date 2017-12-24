@@ -20,9 +20,10 @@ int play_Room1(){
 	// Declare background shift variable
 	int  bg_h=0, bg_v=0;
 	int x, y;
-	int view_speed = 2;
+	int view_speed = 5;
 	int i;
 	struct Object obj[NUM_OF_OBJECT];
+	bool add_display = false;
 
 	configure_objects(obj);
 
@@ -54,15 +55,46 @@ int play_Room1(){
 			//shifting horizontally from right to left
 			bg_h+=view_speed;
 		}
+		if(keys & KEY_A){
+			add_display = false;
+			//Set up the priority of the background
+			BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
+			BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+		}
+
 		// Limit the shift according to the size of the background
 		if(bg_h < 0) 	bg_h = 0;
 		if(bg_h > 255)	bg_h = 255;
 		if(bg_v < 0) 	bg_v = 0;
 		if(bg_v > 319)	bg_v = 319;
 
-		x = 68+bg_h/4;
-		y = 24+bg_v/4;
 
+		//Declare a touchPosition variable
+		touchPosition touch;
+		//Read the touchscreen
+		touchRead(&touch);
+		//Identify a valid touched coordinates and print them
+		if(touch.px | touch.py){
+			i = object_touched(obj, touch.px+bg_h, touch.py+bg_v);
+			switch(obj[i].which_object){
+				case radio: {
+					// Shift the image when the radio is touched, DEBUG !!
+					bg_h+=view_speed;
+					play_radio();
+					break;
+				}
+				case card: {
+					add_display = true;
+					play_card();
+					break;
+				}
+				default: break;
+			}
+
+		}
+
+		x = 65+bg_h/4;
+		y = 24+bg_v/4;
     	oamSet(&oamMain, 	// oam handler
     		0,				// Number of sprite
     		x, y,			// Coordinates
@@ -73,38 +105,13 @@ int play_Room1(){
     		gfx,			// Loaded graphic to display
     		-1,				// Affine rotation to use (-1 none)
     		false,			// Double size if rotating
-    		false,			// Hide this sprite
+    		add_display,	// Hide this sprite
     		false, false,	// Horizontal or vertical flip
     		false			// Mosaic
     		);
     	//Update the sprites
 		oamUpdate(&oamMain);
 
-		//Declare a touchPosition variable
-		touchPosition touch;
-		//Read the touchscreen
-		touchRead(&touch);
-		//Identify a valid touched coordinates and print them
-		if(touch.px | touch.py){
-			i = object_touched(obj, touch.px+bg_h, touch.py+bg_v);
-			if(i>=0 && i<NUM_OF_OBJECT){
-				switch(obj[i].which_object){
-					case radio: {
-						// Shift the image when the radio is touched, DEBUG !!
-						bg_h+=view_speed;
-						play_radio();
-						break;
-					}
-					case card: {
-						// Shift the image when the card is touched, DEBUG !!
-						bg_h+=view_speed;
-						play_card();
-						break;
-					}
-					default: break;
-				}
-			}
-		}
 		swiWaitForVBlank();
 	}
 

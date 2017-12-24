@@ -1,4 +1,5 @@
 #include <nds.h>
+#include <stdio.h>
 #include "Graphics.h"
 #include "background_room1.h"
 #include "background_room1_main.h"
@@ -10,10 +11,10 @@
  */
 void configure_MenuStart(){
 	//Enable a proper RAM memory bank for sub engine
-	VRAM_C_CR = VRAM_ENABLE | VRAM_C_SUB_BG;
+	//VRAM_C_CR = VRAM_ENABLE | VRAM_C_SUB_BG;
 
 	//Configure the sub engine in mode 5 (2D) and activate Backgrounds 2 and 0
-	REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
+	//REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
 }
 
 /*
@@ -21,30 +22,37 @@ void configure_MenuStart(){
  */
 void configure_room1_gfx(){
 	/*
-	 * Main engine
+	 * Main 2D engine
 	 */
 
 	//Enable a proper RAM memory bank for the main engine
 	VRAM_A_CR = VRAM_ENABLE | VRAM_A_MAIN_BG;
-
-	//Configure the main engine in mode 5 (2D) and activate Background 2
-	REG_DISPCNT = MODE_5_2D | DISPLAY_BG2_ACTIVE;
+	//VRAM_B_CR = VRAM_ENABLE | VRAM_B_MAIN_BG;
 
 
-	//Configure BG 2 Sub. (Do not forget the BG_BMP_BASE configuration)
-	BGCTRL[2] = BG_MAP_BASE(0) | BgSize_B8_256x256;
+	//Configure the main engine in mode 5 (2D) and activate BG2 and BG3
+	REG_DISPCNT = MODE_5_2D |  DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
 
-	//Affine Marix Transformation
-	REG_BG2PA = 256;
-	REG_BG2PC = 0;
-	REG_BG2PB = 0;
-	REG_BG2PD = 256;
+	//Configure BG 2 and BG3
+	BGCTRL[2] = BG_BMP_BASE(0) | BgSize_B8_256x256;
+	BGCTRL[3] = BG_BMP_BASE(3) | BgSize_B16_256x256;
+
+    //Affine Marix Transformation
+    REG_BG2PA = 256;
+    REG_BG2PC = 0;
+    REG_BG2PB = 0;
+    REG_BG2PD = 256;
 
 	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
 	swiCopy(background_room1_mainBitmap, BG_GFX, background_room1_mainBitmapLen/2);
 
+	//Set up the priority of the background
+	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
+	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+
+
 	//Set up memory bank to work in sprite mode (offset since we are using VRAM A for backgrounds)
-	VRAM_B_CR = VRAM_ENABLE | VRAM_B_MAIN_SPRITE_0x06400000;
+	VRAM_F_CR = VRAM_ENABLE | VRAM_F_MAIN_SPRITE_0x06400000;
 
 	//Initialize sprite manager and the engine
 	oamInit(&oamMain, SpriteMapping_1D_64, false);
@@ -57,8 +65,9 @@ void configure_room1_gfx(){
 	swiCopy(zoneTiles, gfx, zoneTilesLen/2);
 
 	/*
-	 * Sub engine:
+	 * Sub 2D engine:
 	 * background_room1, 64x64 tiles + palette 256 entries (8 bit/px) + map
+	 * Main 2D engine
 	 */
 
 	// Activate sub engine and background 0 in tiled mode using 64x64 map
