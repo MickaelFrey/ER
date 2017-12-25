@@ -17,9 +17,11 @@ void configure_objects(struct Object *obj){
 	obj[1].border_down = 207;
 };
 
-int object_touched(const struct Object *obj, int x, int y){
+object_type object_touched(const struct Object *obj, int x, int y){
 	int i;
 	int object_num = -1;
+
+	object_type obj_touched = none;
 
 	for(i=0;i<NUM_OF_OBJECT;i++){
 		if(obj[i].border_left <= x && \
@@ -27,10 +29,10 @@ int object_touched(const struct Object *obj, int x, int y){
 				obj[i].border_up <= y &&\
 				obj[i].border_down 	>= y){
 
-			object_num = i;
+			obj_touched = obj[i].which_object;
 			break;
 		}
 	}
-	return object_num;
+	return obj_touched;
 };
 

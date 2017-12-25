@@ -10,7 +10,7 @@
 
 #define NUM_OF_OBJECT 2
 
-typedef enum{radio, card}object_type;
+typedef enum{radio, card, none}object_type;
 
 struct Object{
 	object_type which_object;
@@ -22,6 +22,6 @@ struct Object{
 
 void configure_objects(struct Object *obj);
 
-int object_touched(const struct Object *obj, int x, int y);
+object_type object_touched(const struct Object *obj, int x, int y);
 
 #endif /* OBJECT_ROOM1_H_ */

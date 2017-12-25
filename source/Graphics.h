@@ -16,7 +16,7 @@ u16* gfx;
 /*
  * Configure the graphics settings for the MenuStart
  */
-void configure_MenuStart();
+void configure_MenuStart_gfx();
 
 /*
  * Configure the graphics settings for the Room1

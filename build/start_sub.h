@@ -1,12 +1,12 @@
 
-//{{BLOCK(morse)
+//{{BLOCK(start_sub)
 
 //======================================================================
 //
-//	morse, 256x128@16, 
+//	start_sub, 256x192@16, 
 //	Transparent color : FF,FF,FF
 //	+ bitmap not compressed
-//	Total size: 65536 = 65536
+//	Total size: 98304 = 98304
 //
 //	Time-stamp: 2017-12-25, 22:24:47
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
@@ -14,12 +14,12 @@
 //
 //======================================================================
 
-#ifndef GRIT_MORSE_H
-#define GRIT_MORSE_H
+#ifndef GRIT_START_SUB_H
+#define GRIT_START_SUB_H
 
-#define morseBitmapLen 65536
-extern const unsigned int morseBitmap[16384];
+#define start_subBitmapLen 98304
+extern const unsigned int start_subBitmap[24576];
 
-#endif // GRIT_MORSE_H
+#endif // GRIT_START_SUB_H
 
-//}}BLOCK(morse)
+//}}BLOCK(start_sub)
