@@ -51,6 +51,7 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
   /home/nds/files/workspace/ER/build/background_room1.h \
   /home/nds/files/workspace/ER/build/background_room1_main.h \
   /home/nds/files/workspace/ER/build/zone.h \
+  /home/nds/files/workspace/ER/build/morse.h \
   /home/nds/files/workspace/ER/source/object_room1.h
 
 /opt/devkitPro/libnds/include/nds.h:
@@ -156,5 +157,7 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
 /home/nds/files/workspace/ER/build/background_room1_main.h:
 
 /home/nds/files/workspace/ER/build/zone.h:
+
+/home/nds/files/workspace/ER/build/morse.h:
 
 /home/nds/files/workspace/ER/source/object_room1.h:

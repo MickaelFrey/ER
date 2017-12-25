@@ -4,6 +4,7 @@
 #include "background_room1.h"
 #include "background_room1_main.h"
 #include "zone.h"
+#include "morse.h"
 #include "object_room1.h"
 
 /*
@@ -45,6 +46,15 @@ void configure_room1_gfx(){
 
 	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
 	swiCopy(background_room1_mainBitmap, BG_GFX, background_room1_mainBitmapLen/2);
+
+	REG_BG3PA = 256;
+	REG_BG3PC = 0;
+	REG_BG3PB = 0;
+	REG_BG3PD = 256;
+	REG_BG3X = (1<<8);
+	REG_BG3Y = (-20<<8);
+
+	swiCopy(morseBitmap, BG_BMP_RAM(3), morseBitmapLen/2);
 
 	//Set up the priority of the background
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;

@@ -4,6 +4,12 @@
 #include "object_room1.h"
 #include "Game_room1.h"
 #include "Graphics.h"
+
+#include <maxmod9.h>
+#include "soundbank.h"
+#include "soundbank_bin.h"
+
+
 /*
  * Define the game corresponding to MenuStart
  */
@@ -26,6 +32,12 @@ int play_Room1(){
 	bool add_display = false;
 
 	configure_objects(obj);
+
+	//SOUND
+	//Init the sound library
+	mmInitDefaultMem((mm_addr)soundbank_bin);
+	//Load effect
+	mmLoadEffect(SFX_MORSECODE);
 
 	while(true){
 		//Scan the keys
@@ -78,8 +90,6 @@ int play_Room1(){
 			i = object_touched(obj, touch.px+bg_h, touch.py+bg_v);
 			switch(obj[i].which_object){
 				case radio: {
-					// Shift the image when the radio is touched, DEBUG !!
-					bg_h+=view_speed;
 					play_radio();
 					break;
 				}

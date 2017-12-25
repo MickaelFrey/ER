@@ -48,7 +48,11 @@ Game_room1.o: /home/nds/files/workspace/ER/source/Game_room1.c \
   /opt/devkitPro/libnds/include/nds/system.h \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
   /home/nds/files/workspace/ER/source/Game_room1.h \
-  /home/nds/files/workspace/ER/build/morse.h
+  /opt/devkitPro/libnds/include/maxmod9.h \
+  /opt/devkitPro/libnds/include/mm_types.h \
+  /home/nds/files/workspace/ER/build/soundbank.h \
+  /home/nds/files/workspace/ER/build/soundbank_bin.h \
+  /home/nds/files/workspace/ER/source/irq_management.h
 
 /opt/devkitPro/libnds/include/nds.h:
 
@@ -148,4 +152,12 @@ Game_room1.o: /home/nds/files/workspace/ER/source/Game_room1.c \
 
 /home/nds/files/workspace/ER/source/Game_room1.h:
 
-/home/nds/files/workspace/ER/build/morse.h:
+/opt/devkitPro/libnds/include/maxmod9.h:
+
+/opt/devkitPro/libnds/include/mm_types.h:
+
+/home/nds/files/workspace/ER/build/soundbank.h:
+
+/home/nds/files/workspace/ER/build/soundbank_bin.h:
+
+/home/nds/files/workspace/ER/source/irq_management.h:

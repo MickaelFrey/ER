@@ -1,10 +1,9 @@
 #include <nds.h>
 #include <stdio.h>
 #include "Graphics.h"
+#include "irq_management.h"
 #include "Game.h"
 
-// Parameters
-//#define ...
 
 // Variables
 typedef enum{MenuStart, Room1, Room2, MenuEnd}state;
@@ -27,6 +26,9 @@ int main(void) {
 			}
 			case Room1:{
 				configure_room1_gfx();
+				configure_room1_irq();
+
+				irqEnable(IRQ_TIMER1); // start timer here for the moment
 				is_solved = play_Room1();
 
 				if(!is_solved) state = Room2;
