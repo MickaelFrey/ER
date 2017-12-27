@@ -52,6 +52,7 @@ Game.o: /home/nds/files/workspace/ER/source/Game.c \
   /home/nds/files/workspace/ER/source/Game_room1.h \
   /home/nds/files/workspace/ER/source/Graphics.h \
   /home/nds/files/workspace/ER/source/irq_management.h \
+  /home/nds/files/workspace/ER/source/Game_menu.h \
   /opt/devkitPro/libnds/include/maxmod9.h \
   /opt/devkitPro/libnds/include/mm_types.h \
   /home/nds/files/workspace/ER/build/soundbank.h \
@@ -162,6 +163,8 @@ Game.o: /home/nds/files/workspace/ER/source/Game.c \
 /home/nds/files/workspace/ER/source/Graphics.h:
 
 /home/nds/files/workspace/ER/source/irq_management.h:
+
+/home/nds/files/workspace/ER/source/Game_menu.h:
 
 /opt/devkitPro/libnds/include/maxmod9.h:
 

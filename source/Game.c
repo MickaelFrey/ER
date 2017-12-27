@@ -5,11 +5,13 @@
 #include "Game_room1.h"
 #include "Graphics.h"
 #include "irq_management.h"
+#include "Game_menu.h"
 
 #include <maxmod9.h>
 #include "soundbank.h"
 #include "soundbank_bin.h"
 
+extern int min, sec, msec, bg_h, bg_v;
 
 /*
  * Define the game corresponding to MenuStart
@@ -24,7 +26,7 @@ bool play_MenuStart(){
 	//Declare a touchPosition variable
 	touchPosition touch;
 
-	/*MUSIC STARTS*/
+	//MUSIC STARTS
 	mmStart(MOD_START,MM_PLAY_LOOP);
 
 	while(true){
@@ -32,21 +34,18 @@ bool play_MenuStart(){
 		touchRead(&touch);
 		if(touch.px > 78 && touch.px < 179){
 			if(touch.py > 49 && touch.py < 79){
-				// Stop music and start new game
-				mmStop();
+				/* New game */
 				return true;
 			}
 			if(touch.py > 109 && touch.py < 139){
-				// Continue
-				// Stop music and continue last backup if there is one
-
-				mmStop();
-				/* TODO
-				 * implement a data storage when exiting the game
-				 * and use this data here to start the game
-				 * The data could be: Time, which room are solving..
+				/*
+				 * Continue last backup if there is one.
+				 * (Data are stored when exiting the game)
 				 */
-				return false;
+				if(readGameState()){
+					return false;
+				}
+
 			}
 
 		}
@@ -58,8 +57,6 @@ bool play_MenuStart(){
  */
 bool play_Room1(){
 
-	// Declare background shift variable
-	int  bg_h=0, bg_v=0;
 	int view_speed = 5;
 	struct Object obj[NUM_OF_OBJECT];
 
@@ -127,6 +124,10 @@ bool play_Room1(){
 			//Hide BG2 and show BG3
 			BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
 			BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+		}
+
+		if(keys & KEY_START){
+			return false;
 		}
 
 		//Identify if an object is touched and run the corresponding function

@@ -1,23 +1,40 @@
 #include <nds.h>
 #include <stdio.h>
+#include "Game_menu.h"
 #include "Graphics.h"
 #include "irq_management.h"
 #include "Game.h"
 
+#include <fat.h>
+
+typedef enum{MenuStart, None, Room1, Room2, MenuEnd}State;
+
+/*
+ * Global variables that store all necessary variables to describe the
+ * state of the game
+ */
+int min = 0, sec = 0, msec = 0, bg_h=0, bg_v=0;
+State state = MenuStart;
+
 //------------------------------------------------------------------------------
 int main(void) {
 //------------------------------------------------------------------------------
-	typedef enum{MenuStart, Room1, Room2, MenuEnd}State;
-	State state = MenuStart;
-	bool is_solved = false;
+	bool is_solved = false, is_new_game = false;
+
+	//Initialize the fat library
+	fatInitDefault();
 
 	while(true) {
 		switch(state){
 			case MenuStart:{
 				configure_MenuStart_gfx();
-				is_solved = play_MenuStart();
+				is_new_game = play_MenuStart();
 
-				if(is_solved) state = Room1;
+				if(is_new_game){
+					state = Room1;
+					min = 0, sec = 0, msec = 0;
+					bg_h=0, bg_v=0;
+				}
 				break;
 			}
 			case Room1:{
@@ -25,14 +42,19 @@ int main(void) {
 				configure_room1_irq();
 				is_solved = play_Room1();
 
-				if(is_solved) state = Room2;
+				if(is_solved){
+					state=Room2;
+				}else{
+					writeGameState();
+					state = MenuStart;
+				}
 				break;
 			}
 			case Room2:{
 				configure_Room2();
 				is_solved = play_Room2();
 
-				if(is_solved) state = MenuEnd;
+				if(is_solved) state = MenuStart;
 				break;
 			}
 			case MenuEnd:{
@@ -42,6 +64,7 @@ int main(void) {
 				if(is_solved) state = MenuStart;
 				break;
 			}
+			default: break;
 		}	// End of switch
 
 		swiWaitForVBlank();

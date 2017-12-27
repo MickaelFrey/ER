@@ -3,11 +3,6 @@
 
 
 /*
- * Variables that store the minutes, seconds and milliseconds
- */
-int min = 0, sec = 0, msec = 0;
-
-/*
  * Timer 1 handler.
  * This handler is called each 1 ms. It updates the value of the variables
  * 'min', 'sec' and 'msec'.
