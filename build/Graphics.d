@@ -52,6 +52,8 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
   /home/nds/files/workspace/ER/build/background_room1_main.h \
   /home/nds/files/workspace/ER/build/zone.h \
   /home/nds/files/workspace/ER/build/morse.h \
+  /home/nds/files/workspace/ER/build/locker.h \
+  /home/nds/files/workspace/ER/build/keyboard.h \
   /home/nds/files/workspace/ER/source/object_room1.h \
   /home/nds/files/workspace/ER/build/start_main.h \
   /home/nds/files/workspace/ER/build/start_sub.h
@@ -161,6 +163,10 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
 /home/nds/files/workspace/ER/build/zone.h:
 
 /home/nds/files/workspace/ER/build/morse.h:
+
+/home/nds/files/workspace/ER/build/locker.h:
+
+/home/nds/files/workspace/ER/build/keyboard.h:
 
 /home/nds/files/workspace/ER/source/object_room1.h:
 

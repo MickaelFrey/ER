@@ -24,6 +24,17 @@ void configure_MenuStart_gfx();
 void configure_room1_gfx();
 
 /*
+ * Configure the graphics settings in order to display the morse map
+ */
+void display_morse();
+
+/*
+ * Configure the graphics settings needed when we want to enter, once we believe
+ * we found the good code, in order to go to the next step.
+ */
+void display_locker();
+
+/*
  * Configure the graphics settings for the Room2
  */
 void configure_Room2();

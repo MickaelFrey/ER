@@ -1,10 +1,10 @@
 
-//{{BLOCK(start_main)
+//{{BLOCK(locker)
 
 //======================================================================
 //
-//	start_main, 256x192@16, 
-//	Transparent color : FF,FF,FF
+//	locker, 256x192@16, 
+//	Alphabit on.
 //	+ bitmap not compressed
 //	Total size: 98304 = 98304
 //
@@ -14,12 +14,12 @@
 //
 //======================================================================
 
-#ifndef GRIT_START_MAIN_H
-#define GRIT_START_MAIN_H
+#ifndef GRIT_LOCKER_H
+#define GRIT_LOCKER_H
 
-#define start_mainBitmapLen 98304
-extern const unsigned int start_mainBitmap[24576];
+#define lockerBitmapLen 98304
+extern const unsigned int lockerBitmap[24576];
 
-#endif // GRIT_START_MAIN_H
+#endif // GRIT_LOCKER_H
 
-//}}BLOCK(start_main)
+//}}BLOCK(locker)

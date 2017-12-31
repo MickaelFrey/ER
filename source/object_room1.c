@@ -15,6 +15,18 @@ void configure_objects(struct Object *obj){
 	obj[1].border_right = 155;
 	obj[1].border_up = 197;
 	obj[1].border_down = 207;
+
+	obj[2].which_object = door;
+	obj[2].border_left = 355;
+	obj[2].border_right = 380;
+	obj[2].border_up = 210;
+	obj[2].border_down = 250;
+
+	obj[3].which_object = trap;
+	obj[3].border_left = 350;
+	obj[3].border_right = 380;
+	obj[3].border_up = 420;
+	obj[3].border_down = 450;
 };
 
 object_type object_touched(const struct Object *obj, int x, int y){

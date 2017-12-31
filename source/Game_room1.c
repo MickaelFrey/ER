@@ -1,5 +1,6 @@
 #include <nds.h>
 #include <stdio.h>
+#include "Graphics.h"
 #include "Game_room1.h"
 
 #include <maxmod9.h>
@@ -26,6 +27,14 @@ void play_radio(){
 }
 
 void play_card(){
+	display_morse();
+}
+
+void play_door(){
+	display_locker();
+}
+
+void play_trap(){
 	//Show BG3 in front of BG2
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
 	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;

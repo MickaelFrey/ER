@@ -10,5 +10,7 @@
 
 void play_radio();
 void play_card();
+void play_door();
+void play_trap();
 
 #endif /* GAME_ROOM1_H_ */

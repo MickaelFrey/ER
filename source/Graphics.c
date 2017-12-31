@@ -5,6 +5,8 @@
 #include "background_room1_main.h"
 #include "zone.h"
 #include "morse.h"
+#include "locker.h"
+#include "keyboard.h"
 #include "object_room1.h"
 #include "start_main.h"
 #include "start_sub.h"
@@ -68,29 +70,21 @@ void configure_room1_gfx(){
 	//Configure the main engine in mode 5 (2D) and activate BG2 and BG3
 	REG_DISPCNT = MODE_5_2D |  DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
 
-	//Configure BG 2 and BG3
+	//Configure BG2 and BG3
 	BGCTRL[2] = BG_BMP_BASE(0) | BgSize_B8_256x256;
 	BGCTRL[3] = BG_BMP_BASE(3) | BgSize_B16_256x256;
 
-    //Affine Marix Transformation
+    //Affine Marix Transformation for BG2
     REG_BG2PA = 256;
     REG_BG2PC = 0;
     REG_BG2PB = 0;
     REG_BG2PD = 256;
 
+    //Load background_room1_main in the VRAM of the MAIN
 	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
 	swiCopy(background_room1_mainBitmap, BG_GFX, background_room1_mainBitmapLen/2);
 
-	REG_BG3PA = 256;
-	REG_BG3PC = 0;
-	REG_BG3PB = 0;
-	REG_BG3PD = 256;
-	REG_BG3X = (1<<8);
-	REG_BG3Y = (-20<<8);
-
-	swiCopy(morseBitmap, BG_BMP_RAM(3), morseBitmapLen/2);
-
-	//Set up the priority of the background
+	//Set up the priority of the backgrounds in order to display BG2
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
 	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
 
@@ -111,17 +105,21 @@ void configure_room1_gfx(){
 	/*
 	 * Sub 2D engine:
 	 * background_room1, 64x64 tiles + palette 256 entries (8 bit/px) + map
-	 * Main 2D engine
 	 */
 
 	// Activate sub engine and background 0 in tiled mode using 64x64 map
 	VRAM_C_CR = VRAM_ENABLE | VRAM_C_SUB_BG;
-	REG_DISPCNT_SUB  = MODE_5_2D | DISPLAY_BG0_ACTIVE;
+	REG_DISPCNT_SUB  = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG2_ACTIVE;
 	BGCTRL_SUB[0] = BG_COLOR_256 | BG_MAP_BASE(0) | BG_TILE_BASE(1) | BG_64x64;
+	BGCTRL_SUB[2] = BG_BMP_BASE(5) | BgSize_B16_256x256;
 
 	// Copy tiles and palette to the corresponding place
 	swiCopy(background_room1Tiles, BG_TILE_RAM_SUB(1), background_room1TilesLen/2);
 	swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
+
+	//Set up the priority of the backgrounds in order to display BG0
+	BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
+	BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
 
 	// Copy map to the map base(s): As the used map is 4 times a standard one,
 	// we will need 4 map bases (i.e. 64x64 components * 16 bits = 8 KB)
@@ -142,6 +140,70 @@ void configure_room1_gfx(){
 	// BOTTOM RIGHT quadrant of the image in fourth map base
 	for(i=0; i<32; i++)
 		dmaCopy(&background_room1Map[(i+32)*64+32], &BG_MAP_RAM_SUB(3)[i*32], 64);
+}
+
+/*
+ * Configure the graphics settings in order to display the morse map
+ */
+void display_morse(){
+	/*
+	 * As a remind, BG2 is used to display background_room1_main.png on the MAIN.
+	 * So, we just have to configure BG3 for morse.png
+	 */
+
+    //Affine Marix Transformation
+    REG_BG3PA = 256;
+	REG_BG3PC = 0;
+	REG_BG3PB = 0;
+	REG_BG3PD = 256;
+
+	swiCopy(morseBitmap, BG_BMP_RAM(3), morseBitmapLen/2);
+
+	//Set up the priority of the backgrounds in order to display BG3
+	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
+	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
+}
+
+/*
+ * Configure the graphics settings needed when we want to enter once we believe
+ * we found the good code in order to go to the next step.
+ */
+void display_locker(){
+	/*
+	 * As a remind, BG2 is used to display background_room1_main.png on the MAIN.
+	 * So, we just have to configure BG3 for locker.png
+	 */
+	/*
+	 * Main engine
+	 */
+
+	//Affine Marix Transformation
+	REG_BG3PA = 256;
+	REG_BG3PC = 0;
+	REG_BG3PB = 0;
+	REG_BG3PD = 256;
+
+	swiCopy(lockerBitmap, BG_BMP_RAM(3), lockerBitmapLen/2);
+
+	//Set up the priority of the backgrounds in order to display BG3
+	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
+	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
+
+	/*
+	 * Sub engine
+	 */
+
+	//Affine Marix Transformation
+	REG_BG3PA_SUB = 256;
+	REG_BG3PC_SUB = 0;
+	REG_BG3PB_SUB = 0;
+	REG_BG3PD_SUB = 256;
+
+	swiCopy(keyboardBitmap, BG_BMP_RAM_SUB(5), keyboardBitmapLen/2);
+
+	//Set up the priority of the backgrounds in order to display BG2
+	BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 1;
+	BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 0;
 }
 
 /*

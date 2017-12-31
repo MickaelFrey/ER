@@ -121,9 +121,13 @@ bool play_Room1(){
 		//The Key A hide the additionnal information pop-up in the main screen
 		if(keys & KEY_A){
 			add_display = false;
-			//Hide BG2 and show BG3
+			//Hide BG2 and show BG3 for the MAIN engine
 			BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
 			BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+
+			//Hide BG2 and show BG0 for the SUB engine
+			BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
+			BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
 		}
 
 		if(keys & KEY_START){
@@ -141,6 +145,16 @@ bool play_Room1(){
 				case card: {
 					add_display = true;
 					play_card();
+					break;
+				}
+				case door: {
+					add_display = true;
+					play_door();
+					break;
+				}
+				case trap: {
+					add_display = true;
+					play_trap();
 					break;
 				}
 				default: break;

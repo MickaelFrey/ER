@@ -1,25 +1,25 @@
 
-//{{BLOCK(start_main)
+//{{BLOCK(keyboard)
 
 //======================================================================
 //
-//	start_main, 256x192@16, 
-//	Transparent color : FF,FF,FF
+//	keyboard, 256x192@16, 
+//	Alphabit on.
 //	+ bitmap not compressed
 //	Total size: 98304 = 98304
 //
-//	Time-stamp: 2017-12-31, 16:32:43
+//	Time-stamp: 2017-12-31, 16:59:33
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
 
-#ifndef GRIT_START_MAIN_H
-#define GRIT_START_MAIN_H
+#ifndef GRIT_KEYBOARD_H
+#define GRIT_KEYBOARD_H
 
-#define start_mainBitmapLen 98304
-extern const unsigned int start_mainBitmap[24576];
+#define keyboardBitmapLen 98304
+extern const unsigned int keyboardBitmap[24576];
 
-#endif // GRIT_START_MAIN_H
+#endif // GRIT_KEYBOARD_H
 
-//}}BLOCK(start_main)
+//}}BLOCK(keyboard)

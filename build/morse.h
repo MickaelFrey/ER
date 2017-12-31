@@ -3,12 +3,12 @@
 
 //======================================================================
 //
-//	morse, 256x128@16, 
+//	morse, 256x192@16, 
 //	Transparent color : FF,FF,FF
 //	+ bitmap not compressed
-//	Total size: 65536 = 65536
+//	Total size: 98304 = 98304
 //
-//	Time-stamp: 2017-12-25, 22:24:47
+//	Time-stamp: 2017-12-31, 16:32:43
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -17,8 +17,8 @@
 #ifndef GRIT_MORSE_H
 #define GRIT_MORSE_H
 
-#define morseBitmapLen 65536
-extern const unsigned int morseBitmap[16384];
+#define morseBitmapLen 98304
+extern const unsigned int morseBitmap[24576];
 
 #endif // GRIT_MORSE_H
 
