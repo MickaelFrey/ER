@@ -1,6 +1,7 @@
 #include <nds.h>
 #include <stdio.h>
 #include "Game.h"
+#include "background_room1.h"
 #include "object_room1.h"
 #include "Game_room1.h"
 #include "Graphics.h"
@@ -126,6 +127,7 @@ bool play_Room1(){
 			BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
 
 			//Hide BG2 and show BG0 for the SUB engine
+			swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
 			BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
 			BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
 		}

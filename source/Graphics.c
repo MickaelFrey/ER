@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "Graphics.h"
 #include "background_room1.h"
-#include "mergedsub_room1.h"
+//#include "mergedsub_room1.h"
 #include "background_room1_main.h"
 #include "zone.h"
 #include "morse.h"
@@ -112,22 +112,18 @@ void configure_room1_gfx(){
 	VRAM_C_CR = VRAM_ENABLE | VRAM_C_SUB_BG;
 	//VRAM_H_CR = VRAM_ENABLE | VRAM_H_SUB_BG;
 	//VRAM_I_CR = VRAM_ENABLE | VRAM_I_SUB_BG_0x06208000;
-	REG_DISPCNT_SUB  = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE;
+	REG_DISPCNT_SUB  = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG2_ACTIVE;
 	BGCTRL_SUB[0] = BG_COLOR_256 | BG_MAP_BASE(0) | BG_TILE_BASE(1) | BG_64x64;
-	BGCTRL_SUB[1] = BG_COLOR_256 | BG_MAP_BASE(4) | BG_TILE_BASE(5) | BG_32x32;
-	//BGCTRL_SUB[2] = BG_BMP_BASE(5) | BgSize_B8_256x256;
-/*
+	//BGCTRL_SUB[1] = BG_COLOR_256 | BG_MAP_BASE(4) | BG_TILE_BASE(5) | BG_32x32;
+	BGCTRL_SUB[2] = BG_BMP_BASE(5) | BgSize_B8_256x256;
+
 	// Copy tiles and palette to the corresponding place
 	swiCopy(background_room1Tiles, BG_TILE_RAM_SUB(1), background_room1TilesLen/2);
-	swiCopy(background_room1Pal, &BG_PALETTE_SUB[0], background_room1PalLen/2);
-	*/
-	// Copy tiles and palette to the corresponding place
-	swiCopy(mergedsub_room1Tiles, BG_TILE_RAM_SUB(1), mergedsub_room1TilesLen/2);
-	swiCopy(mergedsub_room1Pal, &BG_PALETTE_SUB[0], mergedsub_room1PalLen/2);
+	swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
 
 	//Set up the priority of the backgrounds in order to display BG0
 	BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
-	BGCTRL_SUB[1] = (BGCTRL_SUB[1] & 0xFFFC) | 1;
+	BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
 
 	// Copy map to the map base(s): As the used map is 4 times a standard one,
 	// we will need 4 map bases (i.e. 64x64 components * 16 bits = 8 KB)
@@ -135,23 +131,22 @@ void configure_room1_gfx(){
 	// TOP LEFT quadrant of the image in first map base
 	int i;
 	for(i=0; i<32; i++)
-		dmaCopy(&mergedsub_room1Map[i*64], &BG_MAP_RAM_SUB(0)[i*32], 64);
-
+		dmaCopy(&background_room1Map[i*64], &BG_MAP_RAM_SUB(0)[i*32], 64);
 	// TOP RIGHT quadrant of the image in second map base
 	for(i=0; i<32; i++)
-		dmaCopy(&mergedsub_room1Map[i*64+32], &BG_MAP_RAM_SUB(1)[i*32], 64);
+		dmaCopy(&background_room1Map[i*64+32], &BG_MAP_RAM_SUB(1)[i*32], 64);
 
 	// BOTTOM LEFT quadrant of the image in third map base
 	for(i=0; i<32; i++)
-		dmaCopy(&mergedsub_room1Map[(i+32)*64], &BG_MAP_RAM_SUB(2)[i*32], 64);
+		dmaCopy(&background_room1Map[(i+32)*64], &BG_MAP_RAM_SUB(2)[i*32], 64);
 
 	// BOTTOM RIGHT quadrant of the image in fourth map base
 	for(i=0; i<32; i++)
-		dmaCopy(&mergedsub_room1Map[(i+32)*64+32], &BG_MAP_RAM_SUB(3)[i*32], 64);
+		dmaCopy(&background_room1Map[(i+32)*64+32], &BG_MAP_RAM_SUB(3)[i*32], 64);
 
 	// BOTTOM LEFT quadrant of the image in third map base
-	for(i=0; i<32; i++)
-		dmaCopy(&mergedsub_room1Map[(i+64)*64], &BG_MAP_RAM_SUB(4)[i*32], 64);
+	//for(i=0; i<32; i++)
+		//dmaCopy(&mergedsub_room1Map[(i+64)*64], &BG_MAP_RAM_SUB(4)[i*32], 64);
 }
 
 /*
@@ -206,18 +201,18 @@ void display_locker(){
 	 */
 
 	//Affine Marix Transformation
-	/*
+
 	REG_BG2PA_SUB = 256;
 	REG_BG2PC_SUB = 0;
 	REG_BG2PB_SUB = 0;
 	REG_BG2PD_SUB = 256;
 
-	swiCopy(keyboardBitmap, BG_BMP_RAM_SUB(5), 49152/2);
-	swiCopy(keyboardPal, &BG_PALETTE_SUB[256], keyboardPalLen/2);
-*/
+	swiCopy(keyboardBitmap, BG_BMP_RAM_SUB(5), keyboardBitmapLen/2);
+	swiCopy(keyboardPal, BG_PALETTE_SUB, keyboardPalLen/2);
+
 	//Set up the priority of the backgrounds in order to display BG2
 	BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 1;
-	BGCTRL_SUB[1] = (BGCTRL_SUB[1] & 0xFFFC) | 0;
+	BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 0;
 }
 
 /*
