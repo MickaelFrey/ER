@@ -3,12 +3,12 @@
 
 //======================================================================
 //
-//	keyboard, 256x192@16, 
-//	Alphabit on.
+//	keyboard, 256x192@8, 
+//	+ palette 256 entries, not compressed
 //	+ bitmap not compressed
-//	Total size: 98304 = 98304
+//	Total size: 512 + 49152 = 49664
 //
-//	Time-stamp: 2017-12-31, 16:59:33
+//	Time-stamp: 2018-01-02, 15:12:40
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -17,8 +17,11 @@
 #ifndef GRIT_KEYBOARD_H
 #define GRIT_KEYBOARD_H
 
-#define keyboardBitmapLen 98304
-extern const unsigned int keyboardBitmap[24576];
+#define keyboardBitmapLen 49152
+extern const unsigned int keyboardBitmap[12288];
+
+#define keyboardPalLen 512
+extern const unsigned short keyboardPal[256];
 
 #endif // GRIT_KEYBOARD_H
 
