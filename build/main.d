@@ -49,6 +49,7 @@ main.o: /home/nds/files/workspace/ER/source/main.c \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
   /home/nds/files/workspace/ER/source/Game_menu.h \
   /home/nds/files/workspace/ER/source/Graphics.h \
+  /home/nds/files/workspace/ER/source/Game_room1.h \
   /home/nds/files/workspace/ER/source/irq_management.h \
   /home/nds/files/workspace/ER/source/Game.h \
   /opt/devkitPro/libnds/include/fat.h \
@@ -153,6 +154,8 @@ main.o: /home/nds/files/workspace/ER/source/main.c \
 /home/nds/files/workspace/ER/source/Game_menu.h:
 
 /home/nds/files/workspace/ER/source/Graphics.h:
+
+/home/nds/files/workspace/ER/source/Game_room1.h:
 
 /home/nds/files/workspace/ER/source/irq_management.h:
 

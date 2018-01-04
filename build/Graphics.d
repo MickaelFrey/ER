@@ -48,6 +48,7 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
   /opt/devkitPro/libnds/include/nds/system.h \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
   /home/nds/files/workspace/ER/source/Graphics.h \
+  /home/nds/files/workspace/ER/source/Game_room1.h \
   /home/nds/files/workspace/ER/build/background_room1.h \
   /home/nds/files/workspace/ER/build/digits.h \
   /home/nds/files/workspace/ER/build/background_room1_main.h \
@@ -156,6 +157,8 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
 /opt/devkitPro/libnds/include/nds/arm9/decompress.h:
 
 /home/nds/files/workspace/ER/source/Graphics.h:
+
+/home/nds/files/workspace/ER/source/Game_room1.h:
 
 /home/nds/files/workspace/ER/build/background_room1.h:
 

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "Graphics.h"
 #include "background_room1.h"
+#include "Game_room1.h"
 #include "digits.h"
 #include "background_room1_main.h"
 #include "zone.h"
@@ -120,8 +121,6 @@ void configure_room1_gfx(){
 
 	// Activate sub engine and background 0 in tiled mode using 64x64 map
 	VRAM_C_CR = VRAM_ENABLE | VRAM_C_SUB_BG;
-	//VRAM_H_CR = VRAM_ENABLE | VRAM_H_SUB_BG;
-	//VRAM_I_CR = VRAM_ENABLE | VRAM_I_SUB_BG_0x06208000;
 	REG_DISPCNT_SUB  = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG2_ACTIVE;
 	BGCTRL_SUB[0] = BG_COLOR_256 | BG_MAP_BASE(0) | BG_TILE_BASE(1) | BG_64x64;
 	//BGCTRL_SUB[1] = BG_COLOR_256 | BG_MAP_BASE(4) | BG_TILE_BASE(5) | BG_32x32;
@@ -228,7 +227,7 @@ void display_locker(){
 /*
  * Display the digits on the locker already displayed
  */
-void display_digits(int locker[]){
+void display_digits(int locker[], Check check){
 	int i, j, k, number;
 
 	for(i = 0; i < 5; i++){				//For the 5 slots of the locker
@@ -237,6 +236,10 @@ void display_digits(int locker[]){
 			for(k = 0; k < 4; k++)		//For the four tiles width of the digits
 				BG_MAP_RAM(10)[(j + 9)*32 + k + 2+i*6] = (u16)(j*4+k)+24*number;
 	}
+
+	if(check == unknown) BG_PALETTE[1] = ARGB16(1,0,0,0);
+	if(check == correct) BG_PALETTE[1] = ARGB16(1,0,31,0);
+	if(check == wrong) BG_PALETTE[1] = ARGB16(1,31,0,0);
 }
 
 /*

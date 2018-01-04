@@ -84,6 +84,13 @@ bool play_Room1(){
 	min=0;	sec=0;	msec=0;
 	irqEnable(IRQ_TIMER1);
 
+	//Pixel shifts for the initial position of the background
+	bg_h = 255;
+	bg_v = 64;
+
+	//At the beginning, it's impossible to move background_room1
+	bool door_unlocked = false;
+
 	while(true){
 		//Scan the keys and identify which key is held
 		scanKeys();
@@ -96,31 +103,34 @@ bool play_Room1(){
 		REG_BG0HOFS_SUB = bg_h;
 		REG_BG0VOFS_SUB = bg_v;
 
-		//Update local variables that track the shifting
-		if(keys & KEY_DOWN){
-			//shifting vertically from down to up
-			bg_v+=view_speed;
+		if(door_unlocked){
+			//Update local variables that track the shifting
+			if(keys & KEY_DOWN){
+				//shifting vertically from down to up
+				bg_v+=view_speed;
+			}
+			if(keys & KEY_LEFT){
+				//shifting horizontally from left to right
+				bg_h-=view_speed;
+			}
+			if(keys & KEY_UP){
+				//shifting vertically from up to down
+				bg_v-=view_speed;
+			}
+			if(keys & KEY_RIGHT){
+				//shifting horizontally from right to left
+				bg_h+=view_speed;
+			}
 		}
-		if(keys & KEY_LEFT){
-			//shifting horizontally from left to right
-			bg_h-=view_speed;
-		}
-		if(keys & KEY_UP){
-			//shifting vertically from up to down
-			bg_v-=view_speed;
-		}
-		if(keys & KEY_RIGHT){
-			//shifting horizontally from right to left
-			bg_h+=view_speed;
-		}
+
 		// Limit the shift according to the size of the background
 		if(bg_h < 0) 	bg_h = 0;
 		if(bg_h > 255)	bg_h = 255;
 		if(bg_v < 0) 	bg_v = 0;
 		if(bg_v > 319)	bg_v = 319;
 
-		//The Key A hide the additionnal information pop-up in the main screen
-		if(keys & KEY_X){
+		//The Key A hide the additionnal information pop-up in the screens
+		if(keys & KEY_X ){
 			add_display = false;
 			//Hide BG2 and show BG3 for the MAIN engine
 			BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
@@ -150,8 +160,17 @@ bool play_Room1(){
 					break;
 				}
 				case door: {
-					add_display = true;
-					play_door();
+					if(!door_unlocked){
+						door_unlocked = play_door();
+						//Hide BG2 and show BG3 for the MAIN engine
+						BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
+						BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+
+						//Hide BG2 and show BG0 for the SUB engine
+						swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
+						BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
+						BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
+					}
 					break;
 				}
 				case trap: {

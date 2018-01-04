@@ -8,9 +8,11 @@
 #ifndef GAME_ROOM1_H_
 #define GAME_ROOM1_H_
 
+typedef enum{unknown, correct, wrong}Check;
+
 void play_radio();
 void play_card();
-void play_door();
+bool play_door();
 void play_trap();
 
 #endif /* GAME_ROOM1_H_ */
