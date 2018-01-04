@@ -120,7 +120,7 @@ bool play_Room1(){
 		if(bg_v > 319)	bg_v = 319;
 
 		//The Key A hide the additionnal information pop-up in the main screen
-		if(keys & KEY_A){
+		if(keys & KEY_X){
 			add_display = false;
 			//Hide BG2 and show BG3 for the MAIN engine
 			BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;

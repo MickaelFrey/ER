@@ -35,6 +35,11 @@ void display_morse();
 void display_locker();
 
 /*
+ * Display the digits on the locker already displayed
+ */
+void display_digits(int locker[]);
+
+/*
  * Configure the graphics settings for the Room2
  */
 void configure_Room2();
