@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include "Graphics.h"
 #include "background_room1.h"
-//#include "mergedsub_room1.h"
+#include "Game_room1.h"
+#include "digits.h"
 #include "background_room1_main.h"
 #include "zone.h"
 #include "morse.h"
@@ -69,11 +70,21 @@ void configure_room1_gfx(){
 	VRAM_B_CR = VRAM_ENABLE | VRAM_B_MAIN_BG;
 
 	//Configure the main engine in mode 5 (2D) and activate BG2 and BG3
-	REG_DISPCNT = MODE_5_2D |  DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
+	REG_DISPCNT = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
 
-	//Configure BG2 and BG3
-	BGCTRL[2] = BG_BMP_BASE(0) | BgSize_B8_256x256;
-	BGCTRL[3] = BG_BMP_BASE(3) | BgSize_B16_256x256;
+	//Configure BG0, BG2 and BG3
+	BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(10) | BG_TILE_BASE(0);
+	BGCTRL[2] = BG_BMP_BASE(2) | BgSize_B16_256x256;
+	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_256x256;
+
+	//Copy the tiles and the palette to the corresonding location
+	swiCopy(digitsTiles, BG_TILE_RAM(0), digitsTilesLen);
+	swiCopy(digitsPal, BG_PALETTE, digitsPalLen);
+
+	int tile;
+	//Make the background transparent with the twelfth part of the digits
+	for(tile = 0; tile <1024; tile++)
+		BG_MAP_RAM(10)[tile] = 24*12;
 
     //Affine Marix Transformation for BG2
     REG_BG2PA = 256;
@@ -82,13 +93,13 @@ void configure_room1_gfx(){
     REG_BG2PD = 256;
 
     //Load background_room1_main in the VRAM of the MAIN
-	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
-	swiCopy(background_room1_mainBitmap, BG_GFX, background_room1_mainBitmapLen/2);
+	//swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
+	swiCopy(background_room1_mainBitmap, BG_BMP_RAM(2), background_room1_mainBitmapLen/2);
 
 	//Set up the priority of the backgrounds in order to display BG2
+	//BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
 	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
-
 
 	//Set up memory bank to work in sprite mode (offset since we are using VRAM A for backgrounds)
 	VRAM_F_CR = VRAM_ENABLE | VRAM_F_MAIN_SPRITE_0x06400000;
@@ -110,8 +121,6 @@ void configure_room1_gfx(){
 
 	// Activate sub engine and background 0 in tiled mode using 64x64 map
 	VRAM_C_CR = VRAM_ENABLE | VRAM_C_SUB_BG;
-	//VRAM_H_CR = VRAM_ENABLE | VRAM_H_SUB_BG;
-	//VRAM_I_CR = VRAM_ENABLE | VRAM_I_SUB_BG_0x06208000;
 	REG_DISPCNT_SUB  = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG2_ACTIVE;
 	BGCTRL_SUB[0] = BG_COLOR_256 | BG_MAP_BASE(0) | BG_TILE_BASE(1) | BG_64x64;
 	//BGCTRL_SUB[1] = BG_COLOR_256 | BG_MAP_BASE(4) | BG_TILE_BASE(5) | BG_32x32;
@@ -164,7 +173,7 @@ void display_morse(){
 	REG_BG3PB = 0;
 	REG_BG3PD = 256;
 
-	swiCopy(morseBitmap, BG_BMP_RAM(3), morseBitmapLen/2);
+	swiCopy(morseBitmap, BG_BMP_RAM(8), morseBitmapLen/2);
 
 	//Set up the priority of the backgrounds in order to display BG3
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
@@ -190,7 +199,7 @@ void display_locker(){
 	REG_BG3PB = 0;
 	REG_BG3PD = 256;
 
-	swiCopy(lockerBitmap, BG_BMP_RAM(3), lockerBitmapLen/2);
+	swiCopy(lockerBitmap, BG_BMP_RAM(8), lockerBitmapLen/2);
 
 	//Set up the priority of the backgrounds in order to display BG3
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
@@ -213,6 +222,24 @@ void display_locker(){
 	//Set up the priority of the backgrounds in order to display BG2
 	BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 1;
 	BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 0;
+}
+
+/*
+ * Display the digits on the locker already displayed
+ */
+void display_digits(int locker[], Check check){
+	int i, j, k, number;
+
+	for(i = 0; i < 5; i++){				//For the 5 slots of the locker
+		number = locker[i];
+		for(j = 0; j < 6; j++)			//For the six tiles height of the digits
+			for(k = 0; k < 4; k++)		//For the four tiles width of the digits
+				BG_MAP_RAM(10)[(j + 9)*32 + k + 2+i*6] = (u16)(j*4+k)+24*number;
+	}
+
+	if(check == unknown) BG_PALETTE[1] = ARGB16(1,0,0,0);
+	if(check == correct) BG_PALETTE[1] = ARGB16(1,0,31,0);
+	if(check == wrong) BG_PALETTE[1] = ARGB16(1,31,0,0);
 }
 
 /*

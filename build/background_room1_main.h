@@ -3,12 +3,12 @@
 
 //======================================================================
 //
-//	background_room1_main, 256x192@8, 
-//	+ palette 256 entries, not compressed
+//	background_room1_main, 256x192@16, 
+//	Alphabit on.
 //	+ bitmap not compressed
-//	Total size: 512 + 49152 = 49664
+//	Total size: 98304 = 98304
 //
-//	Time-stamp: 2018-01-02, 16:07:54
+//	Time-stamp: 2018-01-04, 18:29:30
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -17,11 +17,8 @@
 #ifndef GRIT_BACKGROUND_ROOM1_MAIN_H
 #define GRIT_BACKGROUND_ROOM1_MAIN_H
 
-#define background_room1_mainBitmapLen 49152
-extern const unsigned int background_room1_mainBitmap[12288];
-
-#define background_room1_mainPalLen 512
-extern const unsigned short background_room1_mainPal[256];
+#define background_room1_mainBitmapLen 98304
+extern const unsigned int background_room1_mainBitmap[24576];
 
 #endif // GRIT_BACKGROUND_ROOM1_MAIN_H
 

@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_H_
 #define GRAPHICS_H_
 
-
+#include "Game_room1.h"
 
 #define SCREEN_WIDTH	256
 #define	SCREEN_HEIGHT	192
@@ -33,6 +33,11 @@ void display_morse();
  * we found the good code, in order to go to the next step.
  */
 void display_locker();
+
+/*
+ * Display the digits on the locker already displayed
+ */
+void display_digits(int locker[], Check check);
 
 /*
  * Configure the graphics settings for the Room2
