@@ -1,5 +1,8 @@
 #include <nds.h>
 #include <stdio.h>
+//#include "math.h"
+#include <math.h>
+
 #include "Graphics.h"
 #include "Game_room1.h"
 
@@ -10,6 +13,80 @@
 #include "irq_management.h"
 
 #define MORSE_CODE_LENGTH_SEC	4
+
+/*
+ *
+ */
+void rotateImage_main_BG2(int x, int y, float angle_rads)
+{
+
+	// Compute the distance from rotation point to system origin
+	float r = sqrt(x*x + y*y);
+
+	// Determine the rotation angle alpha of the image
+	float alpha = atan((float)x/(float)y)+angle_rads;
+
+	// Image rotation matrix
+	REG_BG2PA = cos(angle_rads)*256;
+	REG_BG2PB = sin(angle_rads)*256;
+	REG_BG2PC = -sin(angle_rads)*256;
+	REG_BG2PD = cos(angle_rads)*256;
+
+	// Image translation
+	REG_BG2X = (x-r*sin(alpha))*256-(0<<8);
+	REG_BG2Y = (y-r*cos(alpha))*256-(0<<8);
+
+}
+/*
+ *
+ */
+void rotateImage_main_BG3(int x, int y, float angle_rads)
+{
+
+	// Compute the distance from rotation point to system origin
+	float r = sqrt(x*x + y*y);
+
+	// Determine the rotation angle alpha of the image
+	float alpha = atan((float)x/(float)y)+angle_rads;
+
+	// Image rotation matrix
+	REG_BG3PA = cos(angle_rads)*256;
+	REG_BG3PB = sin(angle_rads)*256;
+	REG_BG3PC = -sin(angle_rads)*256;
+	REG_BG3PD = cos(angle_rads)*256;
+
+	// Image translation
+	REG_BG3X = (x-r*sin(alpha))*256-(64<<8);
+	REG_BG3Y = (y-r*cos(alpha))*256-(32<<8);
+
+}
+
+
+void play_hotpot(){
+	display_hotpot();
+
+	float i=0;
+	float j=0;
+	while(true){
+		//Scan the keys and identify which key is held
+		scanKeys();
+		u16 keys = keysHeld();
+
+		if((keys & KEY_X)){	//Quit the locker-mode by pressing on X
+			rotateImage_main_BG3(128, 96,i);
+			i=i+0.01;
+		}
+		if((keys & KEY_A)){	//Quit the locker-mode by pressing on X
+			rotateImage_main_BG2(128, 96,j);
+			j=j+0.01;
+		}
+		//Wait until the screen refresh in order to avoid tiring
+		swiWaitForVBlank();
+	}
+
+
+
+}
 
 void play_radio(){
 	static int stored_sec = 0;

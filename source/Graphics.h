@@ -12,7 +12,10 @@
 //Pointer to the graphic buffer where to store the sprite
 u16* gfx;
 
-
+/*
+ * Configure the graphics settings in order to display the hot pot
+ */
+void display_hotpot();
 /*
  * Configure the graphics settings for the MenuStart
  */

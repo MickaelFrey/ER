@@ -27,11 +27,16 @@ void configure_objects(struct Object *obj){
 	obj[3].border_right = 380;
 	obj[3].border_up = 420;
 	obj[3].border_down = 450;
+
+	obj[4].which_object = hotpot;
+	obj[4].border_left = 234;
+	obj[4].border_right = 246;
+	obj[4].border_up = 164;
+	obj[4].border_down = 170;
 };
 
 object_type object_touched(const struct Object *obj, int x, int y){
 	int i;
-	int object_num = -1;
 
 	object_type obj_touched = none;
 

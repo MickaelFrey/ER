@@ -10,6 +10,7 @@
 
 typedef enum{unknown, correct, wrong}Check;
 
+void play_hotpot();
 void play_radio();
 void play_card();
 bool play_door();

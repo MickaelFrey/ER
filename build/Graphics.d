@@ -49,6 +49,9 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
   /home/nds/files/workspace/ER/source/Graphics.h \
   /home/nds/files/workspace/ER/source/Game_room1.h \
+  /home/nds/files/workspace/ER/build/carrot_back.h \
+  /home/nds/files/workspace/ER/build/carrot_middle.h \
+  /home/nds/files/workspace/ER/build/carrot_center.h \
   /home/nds/files/workspace/ER/build/background_room1.h \
   /home/nds/files/workspace/ER/build/digits.h \
   /home/nds/files/workspace/ER/build/background_room1_main.h \
@@ -159,6 +162,12 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
 /home/nds/files/workspace/ER/source/Graphics.h:
 
 /home/nds/files/workspace/ER/source/Game_room1.h:
+
+/home/nds/files/workspace/ER/build/carrot_back.h:
+
+/home/nds/files/workspace/ER/build/carrot_middle.h:
+
+/home/nds/files/workspace/ER/build/carrot_center.h:
 
 /home/nds/files/workspace/ER/build/background_room1.h:
 

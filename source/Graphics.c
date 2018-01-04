@@ -1,6 +1,10 @@
 #include <nds.h>
 #include <stdio.h>
+
 #include "Graphics.h"
+#include "carrot_back.h"
+#include "carrot_middle.h"
+#include "carrot_center.h"
 #include "background_room1.h"
 #include "Game_room1.h"
 #include "digits.h"
@@ -157,7 +161,58 @@ void configure_room1_gfx(){
 	//for(i=0; i<32; i++)
 		//dmaCopy(&mergedsub_room1Map[(i+64)*64], &BG_MAP_RAM_SUB(4)[i*32], 64);
 }
+/*
+ * Configure the graphics settings in order to display the hot pot
+ */
+void display_hotpot(){
+	//Enable a proper RAM memory bank for the main engine
+	VRAM_A_CR = VRAM_ENABLE | VRAM_A_MAIN_BG;
+	VRAM_B_CR = VRAM_ENABLE | VRAM_B_MAIN_BG;
+	VRAM_D_CR = VRAM_ENABLE | VRAM_D_MAIN_BG;
 
+	//Configure the main engine in mode 5 (2D) and activate BG2 and BG3
+	REG_DISPCNT = MODE_5_2D | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
+
+	//Configure BG0, BG2 and BG3
+	// TILE in VRAM_B and map in VRAM A base 0
+	BGCTRL[1] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(0) | BG_TILE_BASE(8);
+	// Bitmap in VRAM_D
+	// carrot_middle need VRAM D
+	BGCTRL[2] = BG_BMP_BASE(24) | BgSize_B16_256x256;
+	// carrot_center in VRAM B after the tile
+	BGCTRL[3] = BG_BMP_BASE(14) | BgSize_B16_128x128;
+
+
+	//Copy the tiles and the palette of the hot pot background
+	swiCopy(carrot_backMap, BG_MAP_RAM(0), carrot_backMapLen/2);
+	swiCopy(carrot_backTiles, BG_TILE_RAM(8), carrot_backTilesLen/2);
+	swiCopy(carrot_backPal, BG_PALETTE, carrot_backPalLen/2);
+
+	//Copy middle and center carrot bitmaps
+	swiCopy(carrot_middleBitmap, BG_BMP_RAM(24), carrot_middleBitmapLen/2);
+	swiCopy(carrot_centerBitmap, BG_BMP_RAM(14), carrot_centerBitmapLen/2);
+
+    //Affine Marix Transformation for BG2 and BG3
+    REG_BG2PA = 256;
+    REG_BG2PC = 0;
+    REG_BG2PB = 0;
+    REG_BG2PD = 256;
+
+    REG_BG3PA = 256;
+    REG_BG3PC = 0;
+    REG_BG3PB = 0;
+    REG_BG3PD = 256;
+
+    //Load background_room1_main in the VRAM of the MAIN
+	//swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
+	//swiCopy(background_room1_mainBitmap, BG_BMP_RAM(2), background_room1_mainBitmapLen/2);
+
+	//Set up the priority of the backgrounds in order to display BG2
+	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 2;
+	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
+	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
+
+}
 /*
  * Configure the graphics settings in order to display the morse map
  */

@@ -89,7 +89,7 @@ bool play_Room1(){
 	bg_v = 64;
 
 	//At the beginning, it's impossible to move background_room1
-	bool door_unlocked = false;
+	bool door_unlocked = true; // TRUE FOR THE DEBUG
 
 	while(true){
 		//Scan the keys and identify which key is held
@@ -150,6 +150,10 @@ bool play_Room1(){
 		if(touch.px | touch.py){
 			obj_touched = object_touched(obj, touch.px+bg_h, touch.py+bg_v);
 			switch(obj_touched){
+				case hotpot: {
+					play_hotpot();
+					break;
+				}
 				case radio: {
 					play_radio();
 					break;
