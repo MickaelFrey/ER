@@ -8,9 +8,9 @@
 #ifndef OBJECT_ROOM1_H_
 #define OBJECT_ROOM1_H_
 
-#define NUM_OF_OBJECT 5
+#define NUM_OF_OBJECT 7
 
-typedef enum{hotpot, radio, card, door, trap, none}object_type;
+typedef enum{first_msg, stars, hotpot, radio, card, door, trap, none}object_type;
 
 struct Object{
 	object_type which_object;

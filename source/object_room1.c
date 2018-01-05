@@ -23,16 +23,28 @@ void configure_objects(struct Object *obj){
 	obj[2].border_down = 250;
 
 	obj[3].which_object = trap;
-	obj[3].border_left = 350;
-	obj[3].border_right = 380;
-	obj[3].border_up = 420;
-	obj[3].border_down = 450;
+	obj[3].border_left = 97;
+	obj[3].border_right = 126;
+	obj[3].border_up = 64;
+	obj[3].border_down = 91;
 
 	obj[4].which_object = hotpot;
 	obj[4].border_left = 234;
 	obj[4].border_right = 246;
 	obj[4].border_up = 164;
 	obj[4].border_down = 170;
+
+	obj[5].which_object = first_msg;
+	obj[5].border_left = 399;
+	obj[5].border_right = 432;
+	obj[5].border_up = 126;
+	obj[5].border_down = 139;
+
+	obj[6].which_object = stars;
+	obj[6].border_left = 121;
+	obj[6].border_right = 138;
+	obj[6].border_up = 297;
+	obj[6].border_down = 306;
 };
 
 object_type object_touched(const struct Object *obj, int x, int y){
