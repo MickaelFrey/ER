@@ -15,7 +15,7 @@ u16* gfx;
 /*
  * Configure the graphics settings in order to display the hot pot
  */
-void display_hotpot(float angle_center, float angle_middle);
+void display_hotpot();
 /*
  * Configure the graphics settings for the MenuStart
  */

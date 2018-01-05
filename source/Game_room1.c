@@ -18,15 +18,20 @@
 
 
 void play_hotpot(){
-	// Angle_step determine the step of rotation of the carrots in the hot pot
+	//Angle_step determine the step of rotation of the carrots in the hot pot
 	float angle_step = 0.02;
 
-	// Initialize the rotation of the carrots (center and middle)
+	//Initialize the rotation of the carrots (center and middle)
 	float angle_center = angle_step *111;
 	float angle_middle = angle_step *55;
 
-	// Initialize the graphics of the hot pot
-	display_hotpot(angle_center, angle_middle);
+	//Initialize the graphics of the hot pot
+	display_hotpot();
+
+	//Initialize the affine matrix rotation for carrot_middle and carrot_center
+	rotateImage_main_BG3(128, 96, angle_center, 64, 32);
+	rotateImage_main_BG2(128, 96, angle_middle, 0, 0);
+
 	while(true){
 		//Scan the keys and identify which key is held
 		scanKeys();
@@ -41,7 +46,7 @@ void play_hotpot(){
 			 * Center of rotation: x = 256/2 = 128 px, y = 192/2 = 96 px
 			 * Shift: tx = (256-128)/2 = 64, ty = (192-128)/2 = 32
 			 */
-			rotateImage_main_BG3(128, 96,angle_center, 64, 32);
+			rotateImage_main_BG3(128, 96, angle_center, 64, 32);
 			angle_center+=angle_step;
 		}
 		if((keys & KEY_L)){
@@ -52,7 +57,7 @@ void play_hotpot(){
 			 * Center of rotation: x = 256/2 = 128 px, y = 192/2 = 96 px
 			 * Shift: tx = ty = 0;
 			 */
-			rotateImage_main_BG2(128, 96,angle_middle, 0, 0);
+			rotateImage_main_BG2(128, 96, angle_middle, 0, 0);
 			angle_middle+=angle_step;
 		}
 		if(keys_up & KEY_L ||keys_up & KEY_R){

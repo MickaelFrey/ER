@@ -72,33 +72,18 @@ void configure_room1_gfx(){
 	//Enable a proper RAM memory bank for the main engine
 	VRAM_A_CR = VRAM_ENABLE | VRAM_A_MAIN_BG;
 	VRAM_B_CR = VRAM_ENABLE | VRAM_B_MAIN_BG;
+	VRAM_D_CR = VRAM_ENABLE | VRAM_D_MAIN_BG;
 
-	//Configure the main engine in mode 5 (2D) and activate BG2 and BG3
-	REG_DISPCNT = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE |DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
-
-	//Configure BG0 in tile mode for digits
-	BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(10) | BG_TILE_BASE(0);
+	//Configure the main engine in mode 5 (2D) and activate all BGs
+	REG_DISPCNT = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
 
 	//Copy the tiles and the palette to the corresonding location
 	swiCopy(digitsTiles, BG_TILE_RAM(0), digitsTilesLen/2);
-	swiCopy(digitsPal, BG_PALETTE, digitsPalLen/2);
 
-	int tile;
-	//Make the background transparent with the twelfth part of the digits
-	for(tile = 0; tile <1024; tile++)
-		BG_MAP_RAM(10)[tile] = 24*12;
-
-    //Affine Marix Transformation for BG2
-    REG_BG2PA = 256;
-    REG_BG2PC = 0;
-    REG_BG2PB = 0;
-    REG_BG2PD = 256;
-
-
-	//Configure BG0 in tile mode for BG room 1 main (don't overlap digits)
+	//Configure BG0 in tile mode for background_room1_main (don't overlap digits)
 	BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(21) | BG_TILE_BASE(2);
-    //Load background_room1_main in the VRAM of the MAIN
-	//swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
+
+    //Load background_room1_main in the VRAM A of the MAIN
 	swiCopy(background_room1_mainTiles, BG_TILE_RAM(2), background_room1_mainTilesLen/2);
 	swiCopy(background_room1_mainMap, BG_MAP_RAM(21), background_room1_mainMapLen/2);
 	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
@@ -162,24 +147,17 @@ void configure_room1_gfx(){
 /*
  * Configure the graphics settings in order to display the hot pot
  */
-void display_hotpot(float angle_center, float angle_middle){
-
-	//Enable a proper RAM memory bank for the main engine
-	VRAM_A_CR = VRAM_ENABLE | VRAM_A_MAIN_BG;
-	VRAM_B_CR = VRAM_ENABLE | VRAM_B_MAIN_BG;
-	VRAM_D_CR = VRAM_ENABLE | VRAM_D_MAIN_BG;
-
-	//Configure the main engine in mode 5 (2D) and activate BG2 and BG3
-	//REG_DISPCNT = MODE_5_2D | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
+void display_hotpot(){
 
 	//Configure BG0, BG2 and BG3
-	// TILE in VRAM_B and map in VRAM A base 0
+	// TILE in VRAM A
 	BGCTRL[1] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(31) | BG_TILE_BASE(3);
-	// Bitmap in VRAM_D
-	// carrot_middle need VRAM D
+
+	// carrot_middle in VRAM D
 	BGCTRL[2] = BG_BMP_BASE(24) | BgSize_B16_256x256;
-	// carrot_center in VRAM B after the tile
-	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_128x128;
+
+	// carrot_center in VRAM A just after the tile
+	BGCTRL[3] = BG_BMP_BASE(4) | BgSize_B16_128x128;
 
 	//Copy the tiles and the palette of the hot pot background
 	swiCopy(carrot_backMap, BG_MAP_RAM(31), carrot_backMapLen/2);
@@ -189,7 +167,7 @@ void display_hotpot(float angle_center, float angle_middle){
 	// Copy middle carrot in VRAM D
 	swiCopy(carrot_middleBitmap, BG_BMP_RAM(24), carrot_middleBitmapLen/2);
 	// Copy center carrot in VRAM B just after the TILE of carrots back
-	swiCopy(carrot_centerBitmap, BG_BMP_RAM(8), carrot_centerBitmapLen/2);
+	swiCopy(carrot_centerBitmap, BG_BMP_RAM(4), carrot_centerBitmapLen/2);
 
     //Affine Marix Transformation for BG2 and BG3
     REG_BG2PA = 256;
@@ -202,18 +180,16 @@ void display_hotpot(float angle_center, float angle_middle){
     REG_BG3PB = 0;
     REG_BG3PD = 256;
 
-	rotateImage_main_BG3(128, 96,angle_center, 64, 32);
-	rotateImage_main_BG2(128, 96,angle_middle, 0, 0);
-
-	//Set up the priority of the backgrounds in order to display BG 1, 2 and 3
+	//Set up the priority of the backgrounds in order to display BG3, BG2 and BG1 (from top to bottom)
 	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 3;
 	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 2;
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
 	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
 
-	// Disable the sprite
-	oamDisable(&oamMain);	//Disable the sprite
+	//Disable the sprite
+	oamDisable(&oamMain);
 }
+
 /*
  * Configure the graphics when exiting the hot pot
  */
@@ -222,11 +198,15 @@ void exit_display_hotpot(){
 	// Pallette of the background was overwritten by the carrots BG
 	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
 
-	// Assign priority to display main room 1 BG
+	// Assign priority to display background_room1_main
 	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
 	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 2;
 	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 3;
+
+	//Reset the affine matrices for BG2 and BG3
+	rotateImage_main_BG3(0, 0, 0, 0, 0);
+	rotateImage_main_BG2(0, 0, 0, 0, 0);
 
 	// Enable the sprite
 	oamEnable(&oamMain);
@@ -237,9 +217,12 @@ void exit_display_hotpot(){
  */
 void display_morse(){
 	/*
-	 * As a remind, BG2 is used to display background_room1_main.png on the MAIN.
+	 * As a remind, BG0 is used to display background_room1_main.png on the MAIN.
 	 * So, we just have to configure BG3 for morse.png
 	 */
+
+	//morse in VRAM B just after the tile
+	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_256x256;
 
     //Affine Marix Transformation
     REG_BG3PA = 256;
@@ -249,9 +232,12 @@ void display_morse(){
 
 	swiCopy(morseBitmap, BG_BMP_RAM(8), morseBitmapLen/2);
 
-	//Set up the priority of the backgrounds in order to display BG3
+	//Assign priority to display morse (BG3) on the MAIN
+	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 3;
+	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 2;
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
 	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
+
 }
 
 /*
@@ -260,12 +246,26 @@ void display_morse(){
  */
 void display_locker(){
 	/*
-	 * As a remind, BG2 is used to display background_room1_main.png on the MAIN.
+	 * As a remind, BG0 is used to display background_room1_main.png on the MAIN.
 	 * So, we just have to configure BG3 for locker.png
 	 */
 	/*
 	 * Main engine
 	 */
+
+	//Configure BG0 in tile mode for digits
+	BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(10) | BG_TILE_BASE(0);
+
+	//locker in VRAM B just after the tile
+	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_256x256;
+
+	 /* Make the background transparent with the twelfth part of the digits
+	 * which are already in the VRAM A */
+	int tile;
+	for(tile = 0; tile <1024; tile++) BG_MAP_RAM(10)[tile] = 24*12;
+
+	//Copy the palette to the corresonding location
+	swiCopy(digitsPal, BG_PALETTE, digitsPalLen/2);
 
 	//Affine Marix Transformation
 	REG_BG3PA = 256;
@@ -275,9 +275,11 @@ void display_locker(){
 
 	swiCopy(lockerBitmap, BG_BMP_RAM(8), lockerBitmapLen/2);
 
-	//Set up the priority of the backgrounds in order to display BG3
-	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
-	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
+	// Assign priority to display BG0 (digits) on top of BG3 (locker)
+	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
+	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 2;
+	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 3;
+	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
 
 	/*
 	 * Sub engine

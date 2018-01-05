@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "Game.h"
 #include "background_room1.h"
+#include "background_room1_main.h"
 #include "object_room1.h"
 #include "Game_room1.h"
 #include "Graphics.h"
@@ -174,12 +175,20 @@ bool play_Room1(){
 				}
 				case door: {
 					if(!door_unlocked){
-						int code_door[5] = {2, 7, 10, 4, 3};
+						int code_door[5] = {0, 7, 7, 3, 11};
 						door_unlocked = play_locker(code_door);
 
-						//Hide BG2 and show BG3 for the MAIN engine
-						BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
-						BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+						// Pallette of the background was overwritten by the carrots BG
+						swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
+
+						//Configure BG0 in tile mode for background_room1_main (don't overlap digits)
+						BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(21) | BG_TILE_BASE(2);
+
+						// Assign priority to display BG0
+						BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
+						BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
+						BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 2;
+						BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 3;
 
 						//Hide BG2 and show BG0 for the SUB engine
 						swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
@@ -193,9 +202,17 @@ bool play_Room1(){
 						int code_trap[5] = {3, 7, 10, 4, 2};
 						trap_unlocked = play_locker(code_trap);
 
-						//Hide BG2 and show BG3 for the MAIN engine
-						BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
-						BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+						// Pallette of the background was overwritten by the carrots BG
+						swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
+
+						//Configure BG0 in tile mode for background_room1_main (don't overlap digits)
+						BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(21) | BG_TILE_BASE(2);
+
+						// Assign priority to display BG0
+						BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
+						BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
+						BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 2;
+						BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 3;
 
 						//Hide BG2 and show BG0 for the SUB engine
 						swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
@@ -230,9 +247,11 @@ bool play_Room1(){
 
 		//Wait until the screen refresh
 		swiWaitForVBlank();
-	}
 
-	return true; // Return true; the room is solved
+		if(trap_unlocked){
+			return true; // Return true; the room is solved
+		}
+	}
 }
 
 /*

@@ -49,6 +49,7 @@ Game.o: /home/nds/files/workspace/ER/source/Game.c \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
   /home/nds/files/workspace/ER/source/Game.h \
   /home/nds/files/workspace/ER/build/background_room1.h \
+  /home/nds/files/workspace/ER/build/background_room1_main.h \
   /home/nds/files/workspace/ER/source/object_room1.h \
   /home/nds/files/workspace/ER/source/Game_room1.h \
   /home/nds/files/workspace/ER/source/Graphics.h \
@@ -158,6 +159,8 @@ Game.o: /home/nds/files/workspace/ER/source/Game.c \
 /home/nds/files/workspace/ER/source/Game.h:
 
 /home/nds/files/workspace/ER/build/background_room1.h:
+
+/home/nds/files/workspace/ER/build/background_room1_main.h:
 
 /home/nds/files/workspace/ER/source/object_room1.h:
 
