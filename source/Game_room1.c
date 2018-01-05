@@ -12,80 +12,67 @@
 
 #include "irq_management.h"
 
+#include "background_room1_main.h"
+
 #define MORSE_CODE_LENGTH_SEC	4
-
-/*
- *
- */
-void rotateImage_main_BG2(int x, int y, float angle_rads)
-{
-
-	// Compute the distance from rotation point to system origin
-	float r = sqrt(x*x + y*y);
-
-	// Determine the rotation angle alpha of the image
-	float alpha = atan((float)x/(float)y)+angle_rads;
-
-	// Image rotation matrix
-	REG_BG2PA = cos(angle_rads)*256;
-	REG_BG2PB = sin(angle_rads)*256;
-	REG_BG2PC = -sin(angle_rads)*256;
-	REG_BG2PD = cos(angle_rads)*256;
-
-	// Image translation
-	REG_BG2X = (x-r*sin(alpha))*256-(0<<8);
-	REG_BG2Y = (y-r*cos(alpha))*256-(0<<8);
-
-}
-/*
- *
- */
-void rotateImage_main_BG3(int x, int y, float angle_rads)
-{
-
-	// Compute the distance from rotation point to system origin
-	float r = sqrt(x*x + y*y);
-
-	// Determine the rotation angle alpha of the image
-	float alpha = atan((float)x/(float)y)+angle_rads;
-
-	// Image rotation matrix
-	REG_BG3PA = cos(angle_rads)*256;
-	REG_BG3PB = sin(angle_rads)*256;
-	REG_BG3PC = -sin(angle_rads)*256;
-	REG_BG3PD = cos(angle_rads)*256;
-
-	// Image translation
-	REG_BG3X = (x-r*sin(alpha))*256-(64<<8);
-	REG_BG3Y = (y-r*cos(alpha))*256-(32<<8);
-
-}
 
 
 void play_hotpot(){
-	display_hotpot();
+	// Angle_step determine the step of rotation of the carrots in the hot pot
+	float angle_step = 0.02;
 
-	float i=0;
-	float j=0;
+	// Initialize the rotation of the carrots (center and middle)
+	float angle_center = angle_step *111;
+	float angle_middle = angle_step *55;
+
+	// Initialize the graphics of the hot pot
+	display_hotpot(angle_center, angle_middle);
 	while(true){
 		//Scan the keys and identify which key is held
 		scanKeys();
 		u16 keys = keysHeld();
+		u16 keys_up = keysUp();
 
-		if((keys & KEY_X)){	//Quit the locker-mode by pressing on X
-			rotateImage_main_BG3(128, 96,i);
-			i=i+0.01;
+		if((keys & KEY_R)){
+			/*
+			 * Image in BG3 is the carrots in the center.
+			 * The 128x128 picture is rotating around the center of the
+			 * Screen;
+			 * Center of rotation: x = 256/2 = 128 px, y = 192/2 = 96 px
+			 * Shift: tx = (256-128)/2 = 64, ty = (192-128)/2 = 32
+			 */
+			rotateImage_main_BG3(128, 96,angle_center, 64, 32);
+			angle_center+=angle_step;
 		}
-		if((keys & KEY_A)){	//Quit the locker-mode by pressing on X
-			rotateImage_main_BG2(128, 96,j);
-			j=j+0.01;
+		if((keys & KEY_L)){
+			/*
+			 * Image in BG2 is the carrots in the middle.
+			 * The 256x192 picture is rotating around the center of the
+			 * Screen;
+			 * Center of rotation: x = 256/2 = 128 px, y = 192/2 = 96 px
+			 * Shift: tx = ty = 0;
+			 */
+			rotateImage_main_BG2(128, 96,angle_middle, 0, 0);
+			angle_middle+=angle_step;
 		}
+		if(keys_up & KEY_L ||keys_up & KEY_R){
+			/*
+			 * The rotation is inversed everytime that L1 and R1 are released
+			 * to disturb the game
+			 */
+			angle_step = -angle_step;
+		}
+		if((keys & KEY_X)){
+			/*
+			 * Exit the hot pot
+			 */
+			exit_display_hotpot();
+			break;
+		}
+
 		//Wait until the screen refresh in order to avoid tiring
 		swiWaitForVBlank();
 	}
-
-
-
 }
 
 void play_radio(){

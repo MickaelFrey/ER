@@ -15,7 +15,7 @@ u16* gfx;
 /*
  * Configure the graphics settings in order to display the hot pot
  */
-void display_hotpot();
+void display_hotpot(float angle_center, float angle_middle);
 /*
  * Configure the graphics settings for the MenuStart
  */
@@ -51,5 +51,15 @@ void configure_Room2();
  * Configure the graphics settings for the MenuEnd
  */
 void configure_MenuEnd();
+
+/*
+ * Rotate Image for BG2 the main engine.
+ */
+void rotateImage_main_BG2(int x, int y, float angle_rads, int tx, int ty);
+
+/*
+ * Rotate Image for BG3 the main engine.
+ */
+void rotateImage_main_BG3(int x, int y, float angle_rads, int tx, int ty);
 
 #endif /* GRAPHICS_H_ */
