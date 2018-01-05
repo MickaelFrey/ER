@@ -98,7 +98,6 @@ bool play_Room1(){
 		//Scan the keys and identify which key is held
 		scanKeys();
 
-
 		u16 keys = keysHeld();
 
 		//Read the touchscreen
@@ -137,9 +136,6 @@ bool play_Room1(){
 		//The Key A hide the additionnal information pop-up in the screens
 		if(keys & KEY_X ){
 			add_display = false;
-			//Hide BG2 and show BG3 for the MAIN engine
-			//BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
-			//BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
 
 			BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
 			BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
@@ -257,7 +253,24 @@ bool play_Room1(){
 /*
  * Define the game corresponding to MenuEnd
  */
-bool play_MenuEnd(){
+void play_MenuEnd(){
+	int i, j, k, number, timer[5];
 
-	return true;
+
+
+	timer[0] = min / 10;
+	timer[1] = min % 10;
+	timer[2] = 12;
+	timer[3] = sec / 10;
+	timer[4] = sec % 10;
+
+	for(i = 0; i < 5; i++){				//For the 5 slots of the timer
+		number = timer[i];
+		for(j = 0; j < 6; j++)			//For the six tiles height of the digits
+			for(k = 0; k < 4; k++)		//For the four tiles width of the digits
+				BG_MAP_RAM(10)[(j + 9)*32 + k + 8+i*4] = (u16)(j*4+k)+24*number;
+	}
+
+	//Wait until the screen refresh in order to avoid tiring
+	swiWaitForVBlank();
 }

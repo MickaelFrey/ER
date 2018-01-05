@@ -35,4 +35,6 @@ void configure_room1_irq(){
 	 * Irq Handlers set up
 	 */
 	irqSet(IRQ_TIMER1, &ISR_Timer1);
+
+	irqEnable(IRQ_TIMER1);
 }

@@ -21,6 +21,9 @@ int main(void) {
 //------------------------------------------------------------------------------
 	bool is_solved = false, is_new_game = false;
 
+	//Declare a touchPosition variable
+	touchPosition touch;
+
 	//Initialize the fat library
 	fatInitDefault();
 
@@ -41,7 +44,7 @@ int main(void) {
 				configure_room1_gfx();
 				configure_room1_irq();
 				is_solved = play_Room1();
-
+				irqDisable(IRQ_TIMER1);
 				if(is_solved){
 					state=MenuEnd;
 				}else{
@@ -51,10 +54,16 @@ int main(void) {
 				break;
 			}
 			case MenuEnd:{
-				configure_MenuEnd();
-				is_solved = play_MenuEnd();
+				configure_MenuEnd_gfx();
+				play_MenuEnd();
 
-				if(is_solved) state = MenuStart;
+				//Wait that the touchscreen is touched
+				touchRead(&touch);
+				if((touch.px > 75) || (touch.px < 174)){
+					if((touch.py > 128) || (touch.py < 157)){
+						state = MenuStart;
+					}
+				}
 				break;
 			}
 			default: break;

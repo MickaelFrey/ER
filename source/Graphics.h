@@ -43,16 +43,6 @@ void display_locker();
 void display_digits(int locker[], Check check);
 
 /*
- * Configure the graphics settings for the Room2
- */
-void configure_Room2();
-
-/*
- * Configure the graphics settings for the MenuEnd
- */
-void configure_MenuEnd();
-
-/*
  * Rotate Image for BG2 the main engine.
  */
 void rotateImage_main_BG2(int x, int y, float angle_rads, int tx, int ty);
@@ -61,5 +51,10 @@ void rotateImage_main_BG2(int x, int y, float angle_rads, int tx, int ty);
  * Rotate Image for BG3 the main engine.
  */
 void rotateImage_main_BG3(int x, int y, float angle_rads, int tx, int ty);
+
+/*
+ * Configure the graphics settings for the MenuEnd
+ */
+void configure_MenuEnd_gfx();
 
 #endif /* GRAPHICS_H_ */

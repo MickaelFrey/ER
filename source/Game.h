@@ -15,6 +15,6 @@ bool play_Room1();
 /*
  * Define the game corresponding to MenuEnd
  */
-bool play_MenuEnd();
+void play_MenuEnd();
 
 #endif /* GAME_H_ */

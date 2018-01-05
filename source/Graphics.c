@@ -16,6 +16,8 @@
 #include "object_room1.h"
 #include "start_main.h"
 #include "start_sub.h"
+#include "end_main.h"
+#include "end_sub.h"
 
 /*
  * Configure the graphics settings for the MenuStart
@@ -319,20 +321,6 @@ void display_digits(int locker[], Check check){
 }
 
 /*
- * Configure the graphics settings for the Room2
- */
-void configure_Room2(){
-	//...
-}
-
-/*
- * Configure the graphics settings for the MenuEnd
- */
-void configure_MenuEnd(){
-	//...
-}
-
-/*
  * Rotate Image for BG2 the main engine.
  */
 void rotateImage_main_BG2(int x, int y, float angle_rads, int tx, int ty)
@@ -376,4 +364,64 @@ void rotateImage_main_BG3(int x, int y, float angle_rads, int tx, int ty)
 	REG_BG3X = (x-r*sin(alpha))*256-(tx<<8);
 	REG_BG3Y = (y-r*cos(alpha))*256-(ty<<8);
 
+}
+
+/*
+ * Configure the graphics settings for the MenuEnd
+ */
+void configure_MenuEnd_gfx(){
+	/*
+	 * Main 2D engine
+	 */
+	//Enable a proper RAM memory bank for the main engine
+	VRAM_A_CR = VRAM_ENABLE | VRAM_A_MAIN_BG;
+	//Configure the main engine in mode 5 (2D) and activate BG0 and BG2
+	REG_DISPCNT = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG2_ACTIVE;
+
+	//Configure BG0 in tile mode for digits
+	BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(10) | BG_TILE_BASE(0);
+
+	//Configure BG2 in extended rotoscale for displaying the MenuEnd background
+	BGCTRL[2] = BG_BMP_BASE(2) | BgSize_B16_256x256;
+
+	/* Make the background transparent with the twelfth part of the digits
+	 * which are already in the VRAM A */
+	int tile;
+	for(tile = 0; tile <1024; tile++) BG_MAP_RAM(10)[tile] = 24*12;
+
+	//Copy the palette to the corresonding location
+	swiCopy(digitsPal, BG_PALETTE, digitsPalLen/2);
+
+	//Configure affine matrix (no transformation)
+	REG_BG2PA = 256;
+	REG_BG2PC = 0;
+	REG_BG2PB = 0;
+	REG_BG2PD = 256;
+
+	swiCopy(end_mainBitmap, BG_BMP_RAM(2), end_mainBitmapLen/2);
+
+	// Assign priority to display BG0 (digits) on top of BG3 (locker)
+	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
+	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 2;
+	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
+	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 3;
+
+	/*
+	 * Sub 2D engine:
+	 */
+
+	//Enable a proper RAM memory bank for the sub engine
+	VRAM_C_CR = VRAM_ENABLE | VRAM_C_SUB_BG;
+	//Configure the main engine in mode 5 (2D) and activate BG2
+	REG_DISPCNT_SUB = MODE_5_2D |  DISPLAY_BG2_ACTIVE;
+
+	BGCTRL_SUB[2] = BG_BMP_BASE(0) | BgSize_B16_256x256;
+
+	//Configure affine matrix (no transformation)
+	REG_BG2PA_SUB = 256;
+	REG_BG2PC_SUB = 0;
+	REG_BG2PB_SUB = 0;
+	REG_BG2PD_SUB = 256;
+
+	swiCopy(end_subBitmap, BG_GFX_SUB, end_mainBitmapLen/2);
 }
