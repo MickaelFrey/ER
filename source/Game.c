@@ -89,12 +89,15 @@ bool play_Room1(){
 	bg_v = 64;
 
 	//At the beginning, it's impossible to move background_room1
+
 	bool door_unlocked = false; // TRUE FOR THE DEBUG
 	bool trap_unlocked = false;
 
 	while(true){
 		//Scan the keys and identify which key is held
 		scanKeys();
+
+
 		u16 keys = keysHeld();
 
 		//Read the touchscreen
@@ -134,8 +137,13 @@ bool play_Room1(){
 		if(keys & KEY_X ){
 			add_display = false;
 			//Hide BG2 and show BG3 for the MAIN engine
-			BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
-			BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+			//BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
+			//BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+
+			BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
+			BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
+			BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 2;
+			BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 3;
 
 			//Hide BG2 and show BG0 for the SUB engine
 			swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);

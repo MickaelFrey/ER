@@ -5,11 +5,11 @@
 //
 //	background_room1, 512x512@8, 
 //	+ palette 256 entries, not compressed
-//	+ 992 tiles (t|f reduced) not compressed
+//	+ 996 tiles (t|f reduced) not compressed
 //	+ regular map (flat), not compressed, 64x64 
-//	Total size: 512 + 63488 + 8192 = 72192
+//	Total size: 512 + 63744 + 8192 = 72448
 //
-//	Time-stamp: 2018-01-04, 22:19:58
+//	Time-stamp: 2018-01-05, 14:45:14
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -18,8 +18,8 @@
 #ifndef GRIT_BACKGROUND_ROOM1_H
 #define GRIT_BACKGROUND_ROOM1_H
 
-#define background_room1TilesLen 63488
-extern const unsigned int background_room1Tiles[15872];
+#define background_room1TilesLen 63744
+extern const unsigned int background_room1Tiles[15936];
 
 #define background_room1MapLen 8192
 extern const unsigned short background_room1Map[4096];

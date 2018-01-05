@@ -74,16 +74,14 @@ void configure_room1_gfx(){
 	VRAM_B_CR = VRAM_ENABLE | VRAM_B_MAIN_BG;
 
 	//Configure the main engine in mode 5 (2D) and activate BG2 and BG3
-	REG_DISPCNT = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
+	REG_DISPCNT = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE |DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
 
-	//Configure BG0, BG2 and BG3
+	//Configure BG0 in tile mode for digits
 	BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(10) | BG_TILE_BASE(0);
-	BGCTRL[2] = BG_BMP_BASE(2) | BgSize_B16_256x256;
-	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_256x256;
 
 	//Copy the tiles and the palette to the corresonding location
-	swiCopy(digitsTiles, BG_TILE_RAM(0), digitsTilesLen);
-	swiCopy(digitsPal, BG_PALETTE, digitsPalLen);
+	swiCopy(digitsTiles, BG_TILE_RAM(0), digitsTilesLen/2);
+	swiCopy(digitsPal, BG_PALETTE, digitsPalLen/2);
 
 	int tile;
 	//Make the background transparent with the twelfth part of the digits
@@ -96,14 +94,14 @@ void configure_room1_gfx(){
     REG_BG2PB = 0;
     REG_BG2PD = 256;
 
+
+	//Configure BG0 in tile mode for BG room 1 main (don't overlap digits)
+	BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(21) | BG_TILE_BASE(2);
     //Load background_room1_main in the VRAM of the MAIN
 	//swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
-	swiCopy(background_room1_mainBitmap, BG_BMP_RAM(2), background_room1_mainBitmapLen/2);
-
-	//Set up the priority of the backgrounds in order to display BG2
-	//BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
-	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
-	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+	swiCopy(background_room1_mainTiles, BG_TILE_RAM(2), background_room1_mainTilesLen/2);
+	swiCopy(background_room1_mainMap, BG_MAP_RAM(21), background_room1_mainMapLen/2);
+	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
 
 	//Set up memory bank to work in sprite mode (offset since we are using VRAM A for backgrounds)
 	VRAM_F_CR = VRAM_ENABLE | VRAM_F_MAIN_SPRITE_0x06400000;
@@ -164,33 +162,34 @@ void configure_room1_gfx(){
 /*
  * Configure the graphics settings in order to display the hot pot
  */
-void display_hotpot(){
+void display_hotpot(float angle_center, float angle_middle){
+
 	//Enable a proper RAM memory bank for the main engine
 	VRAM_A_CR = VRAM_ENABLE | VRAM_A_MAIN_BG;
 	VRAM_B_CR = VRAM_ENABLE | VRAM_B_MAIN_BG;
 	VRAM_D_CR = VRAM_ENABLE | VRAM_D_MAIN_BG;
 
 	//Configure the main engine in mode 5 (2D) and activate BG2 and BG3
-	REG_DISPCNT = MODE_5_2D | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
+	//REG_DISPCNT = MODE_5_2D | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE;
 
 	//Configure BG0, BG2 and BG3
 	// TILE in VRAM_B and map in VRAM A base 0
-	BGCTRL[1] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(0) | BG_TILE_BASE(8);
+	BGCTRL[1] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(31) | BG_TILE_BASE(3);
 	// Bitmap in VRAM_D
 	// carrot_middle need VRAM D
 	BGCTRL[2] = BG_BMP_BASE(24) | BgSize_B16_256x256;
 	// carrot_center in VRAM B after the tile
-	BGCTRL[3] = BG_BMP_BASE(14) | BgSize_B16_128x128;
-
+	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_128x128;
 
 	//Copy the tiles and the palette of the hot pot background
-	swiCopy(carrot_backMap, BG_MAP_RAM(0), carrot_backMapLen/2);
-	swiCopy(carrot_backTiles, BG_TILE_RAM(8), carrot_backTilesLen/2);
+	swiCopy(carrot_backMap, BG_MAP_RAM(31), carrot_backMapLen/2);
+	swiCopy(carrot_backTiles, BG_TILE_RAM(3), carrot_backTilesLen/2);
 	swiCopy(carrot_backPal, BG_PALETTE, carrot_backPalLen/2);
 
-	//Copy middle and center carrot bitmaps
+	// Copy middle carrot in VRAM D
 	swiCopy(carrot_middleBitmap, BG_BMP_RAM(24), carrot_middleBitmapLen/2);
-	swiCopy(carrot_centerBitmap, BG_BMP_RAM(14), carrot_centerBitmapLen/2);
+	// Copy center carrot in VRAM B just after the TILE of carrots back
+	swiCopy(carrot_centerBitmap, BG_BMP_RAM(8), carrot_centerBitmapLen/2);
 
     //Affine Marix Transformation for BG2 and BG3
     REG_BG2PA = 256;
@@ -203,16 +202,36 @@ void display_hotpot(){
     REG_BG3PB = 0;
     REG_BG3PD = 256;
 
-    //Load background_room1_main in the VRAM of the MAIN
-	//swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
-	//swiCopy(background_room1_mainBitmap, BG_BMP_RAM(2), background_room1_mainBitmapLen/2);
+	rotateImage_main_BG3(128, 96,angle_center, 64, 32);
+	rotateImage_main_BG2(128, 96,angle_middle, 0, 0);
 
-	//Set up the priority of the backgrounds in order to display BG2
+	//Set up the priority of the backgrounds in order to display BG 1, 2 and 3
+	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 3;
 	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 2;
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
 	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
 
+	// Disable the sprite
+	oamDisable(&oamMain);	//Disable the sprite
 }
+/*
+ * Configure the graphics when exiting the hot pot
+ */
+void exit_display_hotpot(){
+
+	// Pallette of the background was overwritten by the carrots BG
+	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
+
+	// Assign priority to display main room 1 BG
+	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
+	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
+	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 2;
+	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 3;
+
+	// Enable the sprite
+	oamEnable(&oamMain);
+}
+
 /*
  * Configure the graphics settings in order to display the morse map
  */
@@ -311,3 +330,48 @@ void configure_MenuEnd(){
 	//...
 }
 
+/*
+ * Rotate Image for BG2 the main engine.
+ */
+void rotateImage_main_BG2(int x, int y, float angle_rads, int tx, int ty)
+{
+	// Compute the distance from rotation point to system origin
+	float r = sqrt(x*x + y*y);
+
+	// Determine the rotation angle alpha of the image
+	float alpha = atan((float)x/(float)y)+angle_rads;
+
+	// Image rotation matrix
+	REG_BG2PA = cos(angle_rads)*256;
+	REG_BG2PB = sin(angle_rads)*256;
+	REG_BG2PC = -sin(angle_rads)*256;
+	REG_BG2PD = cos(angle_rads)*256;
+
+	// Image translation
+	REG_BG2X = (x-r*sin(alpha))*256-(tx<<8);
+	REG_BG2Y = (y-r*cos(alpha))*256-(ty<<8);
+
+}
+/*
+ *	Rotate Image for BG2 with the main engine.
+ */
+void rotateImage_main_BG3(int x, int y, float angle_rads, int tx, int ty)
+{
+
+	// Compute the distance from rotation point to system origin
+	float r = sqrt(x*x + y*y);
+
+	// Determine the rotation angle alpha of the image
+	float alpha = atan((float)x/(float)y)+angle_rads;
+
+	// Image rotation matrix
+	REG_BG3PA = cos(angle_rads)*256;
+	REG_BG3PB = sin(angle_rads)*256;
+	REG_BG3PC = -sin(angle_rads)*256;
+	REG_BG3PD = cos(angle_rads)*256;
+
+	// Image translation
+	REG_BG3X = (x-r*sin(alpha))*256-(tx<<8);
+	REG_BG3Y = (y-r*cos(alpha))*256-(ty<<8);
+
+}
