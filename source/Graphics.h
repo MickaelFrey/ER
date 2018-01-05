@@ -27,6 +27,21 @@ void configure_MenuStart_gfx();
 void configure_room1_gfx();
 
 /*
+ * reset the graphics settings for the Room1
+ */
+void reset_room1_gfx();
+
+/*
+ * Configure the graphics settings in order to display the first message
+ */
+void display_first_msg();
+
+/*
+ * Configure the graphics settings in order to display the stars picture
+ */
+void display_stars();
+
+/*
  * Configure the graphics settings in order to display the morse map
  */
 void display_morse();

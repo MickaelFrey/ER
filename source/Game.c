@@ -58,47 +58,44 @@ bool play_MenuStart(){
  * Define the game corresponding to Room1
  */
 bool play_Room1(){
+	//Code to exit the room
+	int code_door[5] = {0, 7, 7, 3, 11};
+	int code_trap[5] = {3, 8, 10, 4, 2};
 
-	int view_speed = 5;
+	//Declare objects that can be touche
 	struct Object obj[NUM_OF_OBJECT];
+	object_type obj_touched = none;
+	configure_objects(obj);
 
 	//Declare a touchPosition variable
 	touchPosition touch;
 
-	bool add_display = false;
+	//See the map's sprite
+	bool hide_sprite = false;
 
-	object_type obj_touched = none;
+	//Speed when scrolling the map of the sub engine
+	int view_speed = 5;
 
-	configure_objects(obj);
-
-	//SOUND
 	//Init the sound library
 	mmInitDefaultMem((mm_addr)soundbank_bin);
 	//Load module
 	mmLoad(MOD_GAME);
 	//Load effect
 	mmLoadEffect(SFX_MORSECODE);
-	/*MUSIC STARTS*/
+	//Start sound of the game
 	mmStart(MOD_GAME,MM_PLAY_LOOP);
-
-	//Reset min, sec, msec and reset the timer that count the play time
-	min=0;	sec=0;	msec=0;
-	irqEnable(IRQ_TIMER1);
 
 	//Pixel shifts for the initial position of the background
 	bg_h = 255;
 	bg_v = 64;
 
 	//At the beginning, it's impossible to move background_room1
-
-	bool door_unlocked = false; // TRUE FOR THE DEBUG
+	bool door_unlocked = false;
 	bool trap_unlocked = false;
 
 	while(true){
 		//Scan the keys and identify which key is held
 		scanKeys();
-
-
 		u16 keys = keysHeld();
 
 		//Read the touchscreen
@@ -127,7 +124,6 @@ bool play_Room1(){
 				bg_h+=view_speed;
 			}
 		}
-
 		// Limit the shift according to the size of the background
 		if(bg_h < 0) 	bg_h = 0;
 		if(bg_h > 255)	bg_h = 255;
@@ -136,22 +132,9 @@ bool play_Room1(){
 
 		//The Key A hide the additionnal information pop-up in the screens
 		if(keys & KEY_X ){
-			add_display = false;
-			//Hide BG2 and show BG3 for the MAIN engine
-			//BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
-			//BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
-
-			BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
-			BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
-			BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 2;
-			BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 3;
-
-			//Hide BG2 and show BG0 for the SUB engine
-			swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
-			BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
-			BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
+			hide_sprite = false;
+			reset_room1_gfx();
 		}
-
 		if(keys & KEY_START){
 			return false;
 		}
@@ -160,6 +143,16 @@ bool play_Room1(){
 		if(touch.px | touch.py){
 			obj_touched = object_touched(obj, touch.px+bg_h, touch.py+bg_v);
 			switch(obj_touched){
+				case first_msg: {
+					hide_sprite = true;
+					display_first_msg();
+					break;
+				}
+				case stars: {
+					hide_sprite = true;
+					display_stars();
+					break;
+				}
 				case hotpot: {
 					play_hotpot();
 					break;
@@ -169,55 +162,21 @@ bool play_Room1(){
 					break;
 				}
 				case card: {
-					add_display = true;
-					play_card();
+					hide_sprite = true;
+					display_morse();
 					break;
 				}
 				case door: {
 					if(!door_unlocked){
-						int code_door[5] = {0, 7, 7, 3, 11};
 						door_unlocked = play_locker(code_door);
-
-						// Pallette of the background was overwritten by the carrots BG
-						swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
-
-						//Configure BG0 in tile mode for background_room1_main (don't overlap digits)
-						BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(21) | BG_TILE_BASE(2);
-
-						// Assign priority to display BG0
-						BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
-						BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
-						BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 2;
-						BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 3;
-
-						//Hide BG2 and show BG0 for the SUB engine
-						swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
-						BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
-						BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
+						reset_room1_gfx();
 					}
 					break;
 				}
 				case trap: {
 					if(!trap_unlocked){
-						int code_trap[5] = {3, 7, 10, 4, 2};
 						trap_unlocked = play_locker(code_trap);
-
-						// Pallette of the background was overwritten by the carrots BG
-						swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
-
-						//Configure BG0 in tile mode for background_room1_main (don't overlap digits)
-						BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(21) | BG_TILE_BASE(2);
-
-						// Assign priority to display BG0
-						BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
-						BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
-						BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 2;
-						BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 3;
-
-						//Hide BG2 and show BG0 for the SUB engine
-						swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
-						BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
-						BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
+						reset_room1_gfx();
 					}
 					break;
 				}
@@ -238,7 +197,7 @@ bool play_Room1(){
     		gfx,			// Loaded graphic to display
     		-1,				// Affine rotation to use (-1 none)
     		false,			// Double size if rotating
-    		add_display,	// Hide this sprite
+    		hide_sprite,	// Hide this sprite
     		false, false,	// Horizontal or vertical flip
     		false			// Mosaic
     		);

@@ -95,10 +95,6 @@ void play_radio(){
 	}
 }
 
-void play_card(){
-	display_morse();		//Display the morse-map
-}
-
 bool play_locker(int code[5]){
 	Check check = unknown;
 	oamDisable(&oamMain);	//Disable the sprite

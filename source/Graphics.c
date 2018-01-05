@@ -2,6 +2,8 @@
 #include <stdio.h>
 
 #include "Graphics.h"
+#include "first_msg.h"
+#include "stars.h"
 #include "carrot_back.h"
 #include "carrot_middle.h"
 #include "carrot_center.h"
@@ -143,6 +145,84 @@ void configure_room1_gfx(){
 	// BOTTOM LEFT quadrant of the image in third map base
 	//for(i=0; i<32; i++)
 		//dmaCopy(&mergedsub_room1Map[(i+64)*64], &BG_MAP_RAM_SUB(4)[i*32], 64);
+}
+
+/*
+ * reset the graphics settings for the Room1
+ */
+void reset_room1_gfx(){
+	// Pallette of the background was overwritten by the carrots BG
+	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
+
+	//Configure BG0 in tile mode for background_room1_main (don't overlap digits)
+	BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(21) | BG_TILE_BASE(2);
+
+	// Assign priority to display BG0
+	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
+	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
+	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 2;
+	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 3;
+
+	//Hide BG2 and show BG0 for the SUB engine
+	swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
+	BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
+	BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
+
+}
+/*
+ * Configure the graphics settings in order to display the first message
+ */
+void display_first_msg(){
+	/*
+	 * As a remind, BG0 is used to display background_room1_main.png on the MAIN.
+	 * So, we just have to configure BG3.
+	 */
+
+	//morse in VRAM B just after the tile
+	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_256x256;
+
+    //Affine Marix Transformation
+    REG_BG3PA = 256;
+	REG_BG3PC = 0;
+	REG_BG3PB = 0;
+	REG_BG3PD = 256;
+
+	swiCopy(first_msgBitmap, BG_BMP_RAM(8), first_msgBitmapLen/2);
+
+	//Assign priority to display (BG3) on the MAIN
+	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 3;
+	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 2;
+	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
+	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
+
+}
+
+/*
+ * Configure the graphics settings in order to display the stars picture
+ */
+void display_stars(){
+	/*
+	 * As a remind, BG0 is used to display background_room1_main.png on the MAIN.
+	 * So, we just have to configure BG3.
+	 */
+
+	//morse in VRAM B just after the tile
+	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_256x256;
+
+    //Affine Marix Transformation
+    REG_BG3PA = 256;
+	REG_BG3PC = 0;
+	REG_BG3PB = 0;
+	REG_BG3PD = 256;
+
+	swiCopy(starsBitmap, BG_BMP_RAM(8), starsBitmapLen/2);
+
+	//Assign priority to display (BG3) on the MAIN
+	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 3;
+	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 2;
+	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
+	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
+
 }
 /*
  * Configure the graphics settings in order to display the hot pot
