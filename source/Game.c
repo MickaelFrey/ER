@@ -89,7 +89,8 @@ bool play_Room1(){
 	bg_v = 64;
 
 	//At the beginning, it's impossible to move background_room1
-	bool door_unlocked = true; // TRUE FOR THE DEBUG
+	bool door_unlocked = false; // TRUE FOR THE DEBUG
+	bool trap_unlocked = false;
 
 	while(true){
 		//Scan the keys and identify which key is held
@@ -165,7 +166,9 @@ bool play_Room1(){
 				}
 				case door: {
 					if(!door_unlocked){
-						door_unlocked = play_door();
+						int code_door[5] = {2, 7, 10, 4, 3};
+						door_unlocked = play_locker(code_door);
+
 						//Hide BG2 and show BG3 for the MAIN engine
 						BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
 						BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
@@ -178,8 +181,19 @@ bool play_Room1(){
 					break;
 				}
 				case trap: {
-					add_display = true;
-					play_trap();
+					if(!trap_unlocked){
+						int code_trap[5] = {3, 7, 10, 4, 2};
+						trap_unlocked = play_locker(code_trap);
+
+						//Hide BG2 and show BG3 for the MAIN engine
+						BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 0;
+						BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 1;
+
+						//Hide BG2 and show BG0 for the SUB engine
+						swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
+						BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
+						BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
+					}
 					break;
 				}
 				default: break;
@@ -211,14 +225,6 @@ bool play_Room1(){
 	}
 
 	return true; // Return true; the room is solved
-}
-
-/*
- * Define the game corresponding to Room2
- */
-bool play_Room2(){
-
-	return true;
 }
 
 /*

@@ -7,7 +7,7 @@
 
 #include <fat.h>
 
-typedef enum{MenuStart, None, Room1, Room2, MenuEnd}State;
+typedef enum{MenuStart, None, Room1, MenuEnd}State;
 
 /*
  * Global variables that store all necessary variables to describe the
@@ -43,18 +43,11 @@ int main(void) {
 				is_solved = play_Room1();
 
 				if(is_solved){
-					state=Room2;
+					state=MenuEnd;
 				}else{
 					writeGameState();
 					state = MenuStart;
 				}
-				break;
-			}
-			case Room2:{
-				configure_Room2();
-				is_solved = play_Room2();
-
-				if(is_solved) state = MenuStart;
 				break;
 			}
 			case MenuEnd:{

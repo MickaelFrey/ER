@@ -104,10 +104,10 @@ void play_radio(){
 }
 
 void play_card(){
-	display_morse();
+	display_morse();		//Display the morse-map
 }
 
-bool play_door(){
+bool play_locker(int code[5]){
 	Check check = unknown;
 	oamDisable(&oamMain);	//Disable the sprite
 	display_locker();		//Display the backgrounds for the MAIN and the SUB
@@ -121,10 +121,7 @@ bool play_door(){
 		touchRead(&touch);
 	}
 
-	//Code that we have to find
-	int code_room1[5] = {3, 7, 10, 4, 2};
-
-	//Initialize the locker-array
+	//Initialize the locker-array with the digit-reference 12, which means a full transparent group of tiles (6x4)
 	int locker[5];
 	int i;
 	for(i = 0; i < 5; i++) locker[i] = 12;
@@ -181,7 +178,7 @@ bool play_door(){
 			if((keypressed >= 0) && (keypressed < 12)){	//Save the pressed key
 				if(slot_locker < 5){
 					locker[slot_locker] = keypressed;
-					slot_locker++;
+					slot_locker++;	//Increase the index in order to save
 				}
 			}else if(keypressed == 13){		//Clear slot-by-slot the locker
 				if(slot_locker > 0){
@@ -194,10 +191,10 @@ bool play_door(){
 			//Wait until the screen refresh in order to avoid tiring
 			swiWaitForVBlank();
 
-			if(keypressed == 14){
+			if(keypressed == 14){	//In order to check if the code is the right one
 				i = 0;
 				while(i < 5){
-					if(locker[i] == code_room1[i]){
+					if(locker[i] == code[i]){
 						if(i == 4) check = correct;
 						i++;
 					}
@@ -208,7 +205,7 @@ bool play_door(){
 				}
 			}
 
-			//Display the pressed key on the locker
+			//Display the pressed key(s) on the locker and paint it(them) in accordance to the state of check (unknown -> black; true -> green; wrong -> red)
 			display_digits(locker, check);
 
 			//Avoid multi-filling of the locker by waiting that the touchscreen is untouched
@@ -220,25 +217,19 @@ bool play_door(){
 
 		if((keys & KEY_X) || (check == correct)){	//Quit the locker-mode by pressing on X
 			int i;
-			for(i = 0; i < 5; i++) locker[i] = 12;
+			for(i = 0; i < 5; i++) locker[i] = 12;	//Re-initialize the locker as empty
 			slot_locker = 0;
 			display_digits(locker, check);
-			oamEnable(&oamMain);
-			break;
+			oamEnable(&oamMain);					//Re-enable the sprite
+			break;									//Break the while-loop
 		}
 
 	}	//End of while-loop
 
 	if(check == correct){
-		return true;
+		return true;		//The right code has been found
 	}
 	else{
-		return false;
+		return false;		//The code is still unknown
 	}
-}
-
-void play_trap(){
-	//Show BG3 in front of BG2
-	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
-	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
 }

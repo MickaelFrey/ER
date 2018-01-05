@@ -13,11 +13,6 @@ bool play_MenuStart();
 bool play_Room1();
 
 /*
- * Define the game corresponding to Room2
- */
-bool play_Room2();
-
-/*
  * Define the game corresponding to MenuEnd
  */
 bool play_MenuEnd();
