@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <fat.h>
 
-extern int min, sec, msec, state, bg_h, bg_v;
+extern int min, sec, msec, state, bg_h, bg_v, door_unlocked;
 
 /*
  * This function reads the state of the game of the previous games and
@@ -14,7 +14,7 @@ bool readGameState()
 	if(file != NULL)
 	{
 		//Read the value and put it into the global variables
-		fscanf(file,"%i %i %i %i %i %i\n",&min, &sec, &msec, &state, &bg_h, &bg_v);
+		fscanf(file,"%i %i %i %i %i %i %i\n",&min, &sec, &msec, &state, &bg_h, &bg_v, &door_unlocked);
 		// close the file
 		fclose(file);
 		return true;
@@ -35,7 +35,7 @@ bool writeGameState()
 	if(file != NULL)
 	{
 		//Print the value in the file
-		fprintf(file,"%i %i %i %i %i %i\n", min, sec, msec, state, bg_h, bg_v);
+		fprintf(file,"%i %i %i %i %i %i %i\n", min, sec, msec, state, bg_h, bg_v, door_unlocked);
 		//Close the file
 		fclose(file);
 		return true;

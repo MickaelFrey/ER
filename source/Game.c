@@ -14,6 +14,7 @@
 #include "soundbank_bin.h"
 
 extern int min, sec, msec, bg_h, bg_v;
+extern bool door_unlocked;
 
 /*
  * Define the game corresponding to MenuStart
@@ -85,12 +86,6 @@ bool play_Room1(){
 	//Start sound of the game
 	mmStart(MOD_GAME,MM_PLAY_LOOP);
 
-	//Pixel shifts for the initial position of the background
-	bg_h = 255;
-	bg_v = 64;
-
-	//At the beginning, it's impossible to move background_room1
-	bool door_unlocked = false;
 	bool trap_unlocked = false;
 
 	while(true){

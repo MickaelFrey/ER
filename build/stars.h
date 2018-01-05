@@ -1,25 +1,25 @@
 
-//{{BLOCK(locker)
+//{{BLOCK(stars)
 
 //======================================================================
 //
-//	locker, 256x192@16, 
-//	Alphabit on.
+//	stars, 256x192@16, 
+//	Transparent color : FF,FF,FF
 //	+ bitmap not compressed
 //	Total size: 98304 = 98304
 //
-//	Time-stamp: 2018-01-05, 18:50:13
+//	Time-stamp: 2018-01-05, 18:50:14
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
 
-#ifndef GRIT_LOCKER_H
-#define GRIT_LOCKER_H
+#ifndef GRIT_STARS_H
+#define GRIT_STARS_H
 
-#define lockerBitmapLen 98304
-extern const unsigned int lockerBitmap[24576];
+#define starsBitmapLen 98304
+extern const unsigned int starsBitmap[24576];
 
-#endif // GRIT_LOCKER_H
+#endif // GRIT_STARS_H
 
-//}}BLOCK(locker)
+//}}BLOCK(stars)

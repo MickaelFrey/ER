@@ -13,7 +13,7 @@ typedef enum{MenuStart, None, Room1, MenuEnd}State;
  * Global variables that store all necessary variables to describe the
  * state of the game
  */
-int min = 0, sec = 0, msec = 0, bg_h=0, bg_v=0;
+int min = 0, sec = 0, msec = 0, bg_h=0, bg_v=0, door_unlocked = 0;
 State state = MenuStart;
 
 //------------------------------------------------------------------------------
@@ -36,7 +36,10 @@ int main(void) {
 				if(is_new_game){
 					state = Room1;
 					min = 0, sec = 0, msec = 0;
-					bg_h=0, bg_v=0;
+					door_unlocked = 0;
+					//Pixel shifts for the initial position of the background
+					bg_h = 255;
+					bg_v = 64;
 				}
 				break;
 			}
@@ -45,22 +48,22 @@ int main(void) {
 				configure_room1_irq();
 				is_solved = play_Room1();
 				irqDisable(IRQ_TIMER1);
+				writeGameState();
 				if(is_solved){
 					state=MenuEnd;
+					configure_MenuEnd_gfx();
 				}else{
-					writeGameState();
 					state = MenuStart;
 				}
 				break;
 			}
 			case MenuEnd:{
-				configure_MenuEnd_gfx();
 				play_MenuEnd();
 
 				//Wait that the touchscreen is touched
 				touchRead(&touch);
-				if((touch.px > 75) || (touch.px < 174)){
-					if((touch.py > 128) || (touch.py < 157)){
+				if((touch.px > 75) && (touch.px < 174)){
+					if((touch.py > 128) && (touch.py < 157)){
 						state = MenuStart;
 					}
 				}

@@ -49,6 +49,8 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
   /home/nds/files/workspace/ER/source/Graphics.h \
   /home/nds/files/workspace/ER/source/Game_room1.h \
+  /home/nds/files/workspace/ER/build/first_msg.h \
+  /home/nds/files/workspace/ER/build/stars.h \
   /home/nds/files/workspace/ER/build/carrot_back.h \
   /home/nds/files/workspace/ER/build/carrot_middle.h \
   /home/nds/files/workspace/ER/build/carrot_center.h \
@@ -61,7 +63,9 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
   /home/nds/files/workspace/ER/build/keyboard.h \
   /home/nds/files/workspace/ER/source/object_room1.h \
   /home/nds/files/workspace/ER/build/start_main.h \
-  /home/nds/files/workspace/ER/build/start_sub.h
+  /home/nds/files/workspace/ER/build/start_sub.h \
+  /home/nds/files/workspace/ER/build/end_main.h \
+  /home/nds/files/workspace/ER/build/end_sub.h
 
 /opt/devkitPro/libnds/include/nds.h:
 
@@ -163,6 +167,10 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
 
 /home/nds/files/workspace/ER/source/Game_room1.h:
 
+/home/nds/files/workspace/ER/build/first_msg.h:
+
+/home/nds/files/workspace/ER/build/stars.h:
+
 /home/nds/files/workspace/ER/build/carrot_back.h:
 
 /home/nds/files/workspace/ER/build/carrot_middle.h:
@@ -188,3 +196,7 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
 /home/nds/files/workspace/ER/build/start_main.h:
 
 /home/nds/files/workspace/ER/build/start_sub.h:
+
+/home/nds/files/workspace/ER/build/end_main.h:
+
+/home/nds/files/workspace/ER/build/end_sub.h:
