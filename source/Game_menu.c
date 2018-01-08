@@ -1,7 +1,14 @@
-#include <stdio.h>
-#include <fat.h>
-
-extern int min, sec, msec, state, bg_h, bg_v, door_unlocked;
+/*
+ * Game_menu.c
+ *
+ * Description in Game_menu.h
+ *
+ *  Created on: Dec 08, 2018
+ *      Author: Anthony Cavin and Mickaël Frey
+ *       Place: EPFL
+ *        Game: Escape room
+ */
+#include "Game_menu.h"
 
 /*
  * This function reads the state of the game of the previous games and
@@ -14,7 +21,7 @@ bool readGameState()
 	if(file != NULL)
 	{
 		//Read the value and put it into the global variables
-		fscanf(file,"%i %i %i %i %i %i %i\n",&min, &sec, &msec, &state, &bg_h, &bg_v, &door_unlocked);
+		fscanf(file,"%i %i %i %i %i %i\n",&min, &sec, &state, &bg_h, &bg_v, &door_unlocked);
 		// close the file
 		fclose(file);
 		return true;
@@ -35,7 +42,7 @@ bool writeGameState()
 	if(file != NULL)
 	{
 		//Print the value in the file
-		fprintf(file,"%i %i %i %i %i %i %i\n", min, sec, msec, state, bg_h, bg_v, door_unlocked);
+		fprintf(file,"%i %i %i %i %i %i\n", min, sec, state, bg_h, bg_v, door_unlocked);
 		//Close the file
 		fclose(file);
 		return true;

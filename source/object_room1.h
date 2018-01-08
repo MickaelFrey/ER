@@ -1,12 +1,18 @@
 /*
  * object_room1.h
  *
- *  Created on: Dec 23, 2017
- *      Author: nds
+ * Manage the objects that can be touche in the game.
+ *
+ *  Created on: Dec 08, 2018
+ *      Author: Anthony Cavin and Mickaël Frey
+ *       Place: EPFL
+ *        Game: Escape room
  */
 
 #ifndef OBJECT_ROOM1_H_
 #define OBJECT_ROOM1_H_
+
+#include <nds.h>
 
 #define NUM_OF_OBJECT 7
 

@@ -1,7 +1,16 @@
-#include <nds.h>
+/*
+ * object_room1.c
+ *
+ * Description in object_room1.h
+ *
+ *  Created on: Dec 08, 2018
+ *      Author: Anthony Cavin and Mickaël Frey
+ *       Place: EPFL
+ *        Game: Escape room
+ */
+
+
 #include "object_room1.h"
-
-
 
 void configure_objects(struct Object *obj){
 	obj[0].which_object = radio;

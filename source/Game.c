@@ -1,21 +1,15 @@
-#include <nds.h>
-#include <stdio.h>
+/*
+ * Game.c
+ *
+ * Description in Game.h
+ *
+ *  Created on: Dec 08, 2018
+ *      Author: Anthony Cavin and Mickaël Frey
+ *       Place: EPFL
+ *        Game: Escape room
+ */
+
 #include "Game.h"
-#include "background_room1.h"
-#include "background_room1_main.h"
-#include "object_room1.h"
-#include "Game_room1.h"
-#include "Graphics.h"
-#include "irq_management.h"
-#include "Game_menu.h"
-
-#include <maxmod9.h>
-#include "soundbank.h"
-#include "soundbank_bin.h"
-
-extern int min, sec, msec, bg_h, bg_v;
-extern bool door_unlocked;
-
 /*
  * Define the game corresponding to MenuStart
  */

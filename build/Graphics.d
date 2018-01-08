@@ -1,4 +1,5 @@
 Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
+  /home/nds/files/workspace/ER/source/Graphics.h \
   /opt/devkitPro/libnds/include/nds.h \
   /opt/devkitPro/libnds/include/nds/libversion.h \
   /opt/devkitPro/libnds/include/nds/ndstypes.h \
@@ -47,8 +48,13 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
   /opt/devkitPro/libnds/include/nds/arm9/sprite.h \
   /opt/devkitPro/libnds/include/nds/system.h \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
-  /home/nds/files/workspace/ER/source/Graphics.h \
   /home/nds/files/workspace/ER/source/Game_room1.h \
+  /opt/devkitPro/libnds/include/maxmod9.h \
+  /opt/devkitPro/libnds/include/mm_types.h \
+  /home/nds/files/workspace/ER/build/soundbank.h \
+  /home/nds/files/workspace/ER/build/soundbank_bin.h \
+  /home/nds/files/workspace/ER/source/irq_management.h \
+  /home/nds/files/workspace/ER/build/background_room1_main.h \
   /home/nds/files/workspace/ER/build/first_msg.h \
   /home/nds/files/workspace/ER/build/stars.h \
   /home/nds/files/workspace/ER/build/carrot_back.h \
@@ -56,7 +62,6 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
   /home/nds/files/workspace/ER/build/carrot_center.h \
   /home/nds/files/workspace/ER/build/background_room1.h \
   /home/nds/files/workspace/ER/build/digits.h \
-  /home/nds/files/workspace/ER/build/background_room1_main.h \
   /home/nds/files/workspace/ER/build/zone.h \
   /home/nds/files/workspace/ER/build/morse.h \
   /home/nds/files/workspace/ER/build/locker.h \
@@ -66,6 +71,8 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
   /home/nds/files/workspace/ER/build/start_sub.h \
   /home/nds/files/workspace/ER/build/end_main.h \
   /home/nds/files/workspace/ER/build/end_sub.h
+
+/home/nds/files/workspace/ER/source/Graphics.h:
 
 /opt/devkitPro/libnds/include/nds.h:
 
@@ -163,9 +170,19 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
 
 /opt/devkitPro/libnds/include/nds/arm9/decompress.h:
 
-/home/nds/files/workspace/ER/source/Graphics.h:
-
 /home/nds/files/workspace/ER/source/Game_room1.h:
+
+/opt/devkitPro/libnds/include/maxmod9.h:
+
+/opt/devkitPro/libnds/include/mm_types.h:
+
+/home/nds/files/workspace/ER/build/soundbank.h:
+
+/home/nds/files/workspace/ER/build/soundbank_bin.h:
+
+/home/nds/files/workspace/ER/source/irq_management.h:
+
+/home/nds/files/workspace/ER/build/background_room1_main.h:
 
 /home/nds/files/workspace/ER/build/first_msg.h:
 
@@ -180,8 +197,6 @@ Graphics.o: /home/nds/files/workspace/ER/source/Graphics.c \
 /home/nds/files/workspace/ER/build/background_room1.h:
 
 /home/nds/files/workspace/ER/build/digits.h:
-
-/home/nds/files/workspace/ER/build/background_room1_main.h:
 
 /home/nds/files/workspace/ER/build/zone.h:
 

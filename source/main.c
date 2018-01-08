@@ -1,19 +1,21 @@
-#include <nds.h>
-#include <stdio.h>
-#include "Game_menu.h"
-#include "Graphics.h"
-#include "irq_management.h"
+/*
+ * main.c
+ *
+ * Main file for the Escape Room game.
+ *
+ *  Created on: Dec 08, 2018
+ *      Author: Anthony Cavin and Mickaël Frey
+ *       Place: EPFL
+ *        Game: Escape room
+ */
+
 #include "Game.h"
-
-#include <fat.h>
-
-typedef enum{MenuStart, None, Room1, MenuEnd}State;
 
 /*
  * Global variables that store all necessary variables to describe the
  * state of the game
  */
-int min = 0, sec = 0, msec = 0, bg_h=0, bg_v=0, door_unlocked = 0;
+int min = 0, sec = 0, bg_h=0, bg_v=0, door_unlocked = 0;
 State state = MenuStart;
 
 //------------------------------------------------------------------------------
@@ -30,12 +32,19 @@ int main(void) {
 	while(true) {
 		switch(state){
 			case MenuStart:{
+				//Configure graphics for the first menu
 				configure_MenuStart_gfx();
+				/*
+				 * Check if the player want to initialize a new game.
+				 * If the player press "continue" all the state of
+				 * the previous game are download from the file
+				 * GameState.txt to continue in this state.
+				 */
 				is_new_game = play_MenuStart();
-
 				if(is_new_game){
+					//Start game initialization if New game
 					state = Room1;
-					min = 0, sec = 0, msec = 0;
+					min = 0, sec = 0;
 					door_unlocked = 0;
 					//Pixel shifts for the initial position of the background
 					bg_h = 255;
@@ -44,23 +53,31 @@ int main(void) {
 				break;
 			}
 			case Room1:{
+				//Configure graphics and IRQ for Room 1
 				configure_room1_gfx();
 				configure_room1_irq();
+				/*
+				 * Play the room: blocking function until the player press start
+				 * or until the room is solved.
+				 */
 				is_solved = play_Room1();
+				//Save time and game states when exiting the room
 				irqDisable(IRQ_TIMER1);
 				writeGameState();
 				if(is_solved){
+					//If room solved go to Menu end with new graphics
 					state=MenuEnd;
 					configure_MenuEnd_gfx();
+					//Show time needed to solve the room
+					play_MenuEnd();
 				}else{
+					//If player press start button return to start menu
 					state = MenuStart;
 				}
 				break;
 			}
 			case MenuEnd:{
-				play_MenuEnd();
-
-				//Wait that the touchscreen is touched
+				//Wait for the player to touch the exit button
 				touchRead(&touch);
 				if((touch.px > 75) && (touch.px < 174)){
 					if((touch.py > 128) && (touch.py < 157)){

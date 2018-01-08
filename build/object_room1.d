@@ -1,4 +1,5 @@
 object_room1.o: /home/nds/files/workspace/ER/source/object_room1.c \
+  /home/nds/files/workspace/ER/source/object_room1.h \
   /opt/devkitPro/libnds/include/nds.h \
   /opt/devkitPro/libnds/include/nds/libversion.h \
   /opt/devkitPro/libnds/include/nds/ndstypes.h \
@@ -46,8 +47,9 @@ object_room1.o: /home/nds/files/workspace/ER/source/object_room1.c \
   /opt/devkitPro/libnds/include/nds/arm9/videoGL.h \
   /opt/devkitPro/libnds/include/nds/arm9/sprite.h \
   /opt/devkitPro/libnds/include/nds/system.h \
-  /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
-  /home/nds/files/workspace/ER/source/object_room1.h
+  /opt/devkitPro/libnds/include/nds/arm9/decompress.h
+
+/home/nds/files/workspace/ER/source/object_room1.h:
 
 /opt/devkitPro/libnds/include/nds.h:
 
@@ -144,5 +146,3 @@ object_room1.o: /home/nds/files/workspace/ER/source/object_room1.c \
 /opt/devkitPro/libnds/include/nds/system.h:
 
 /opt/devkitPro/libnds/include/nds/arm9/decompress.h:
-
-/home/nds/files/workspace/ER/source/object_room1.h:

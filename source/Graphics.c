@@ -1,25 +1,15 @@
-#include <nds.h>
-#include <stdio.h>
+/*
+ * Graphics.c
+ *
+ * Description in Graphics.h
+ *
+ *  Created on: Dec 08, 2018
+ *      Author: Anthony Cavin and Mickaël Frey
+ *       Place: EPFL
+ *        Game: Escape room
+ */
 
 #include "Graphics.h"
-#include "first_msg.h"
-#include "stars.h"
-#include "carrot_back.h"
-#include "carrot_middle.h"
-#include "carrot_center.h"
-#include "background_room1.h"
-#include "Game_room1.h"
-#include "digits.h"
-#include "background_room1_main.h"
-#include "zone.h"
-#include "morse.h"
-#include "locker.h"
-#include "keyboard.h"
-#include "object_room1.h"
-#include "start_main.h"
-#include "start_sub.h"
-#include "end_main.h"
-#include "end_sub.h"
 
 /*
  * Configure the graphics settings for the MenuStart

@@ -1,4 +1,5 @@
 Game_room1.o: /home/nds/files/workspace/ER/source/Game_room1.c \
+  /home/nds/files/workspace/ER/source/Game_room1.h \
   /opt/devkitPro/libnds/include/nds.h \
   /opt/devkitPro/libnds/include/nds/libversion.h \
   /opt/devkitPro/libnds/include/nds/ndstypes.h \
@@ -48,13 +49,30 @@ Game_room1.o: /home/nds/files/workspace/ER/source/Game_room1.c \
   /opt/devkitPro/libnds/include/nds/system.h \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
   /home/nds/files/workspace/ER/source/Graphics.h \
-  /home/nds/files/workspace/ER/source/Game_room1.h \
+  /home/nds/files/workspace/ER/build/first_msg.h \
+  /home/nds/files/workspace/ER/build/stars.h \
+  /home/nds/files/workspace/ER/build/carrot_back.h \
+  /home/nds/files/workspace/ER/build/carrot_middle.h \
+  /home/nds/files/workspace/ER/build/carrot_center.h \
+  /home/nds/files/workspace/ER/build/background_room1.h \
+  /home/nds/files/workspace/ER/build/digits.h \
+  /home/nds/files/workspace/ER/build/background_room1_main.h \
+  /home/nds/files/workspace/ER/build/zone.h \
+  /home/nds/files/workspace/ER/build/morse.h \
+  /home/nds/files/workspace/ER/build/locker.h \
+  /home/nds/files/workspace/ER/build/keyboard.h \
+  /home/nds/files/workspace/ER/source/object_room1.h \
+  /home/nds/files/workspace/ER/build/start_main.h \
+  /home/nds/files/workspace/ER/build/start_sub.h \
+  /home/nds/files/workspace/ER/build/end_main.h \
+  /home/nds/files/workspace/ER/build/end_sub.h \
   /opt/devkitPro/libnds/include/maxmod9.h \
   /opt/devkitPro/libnds/include/mm_types.h \
   /home/nds/files/workspace/ER/build/soundbank.h \
   /home/nds/files/workspace/ER/build/soundbank_bin.h \
-  /home/nds/files/workspace/ER/source/irq_management.h \
-  /home/nds/files/workspace/ER/build/background_room1_main.h
+  /home/nds/files/workspace/ER/source/irq_management.h
+
+/home/nds/files/workspace/ER/source/Game_room1.h:
 
 /opt/devkitPro/libnds/include/nds.h:
 
@@ -154,7 +172,39 @@ Game_room1.o: /home/nds/files/workspace/ER/source/Game_room1.c \
 
 /home/nds/files/workspace/ER/source/Graphics.h:
 
-/home/nds/files/workspace/ER/source/Game_room1.h:
+/home/nds/files/workspace/ER/build/first_msg.h:
+
+/home/nds/files/workspace/ER/build/stars.h:
+
+/home/nds/files/workspace/ER/build/carrot_back.h:
+
+/home/nds/files/workspace/ER/build/carrot_middle.h:
+
+/home/nds/files/workspace/ER/build/carrot_center.h:
+
+/home/nds/files/workspace/ER/build/background_room1.h:
+
+/home/nds/files/workspace/ER/build/digits.h:
+
+/home/nds/files/workspace/ER/build/background_room1_main.h:
+
+/home/nds/files/workspace/ER/build/zone.h:
+
+/home/nds/files/workspace/ER/build/morse.h:
+
+/home/nds/files/workspace/ER/build/locker.h:
+
+/home/nds/files/workspace/ER/build/keyboard.h:
+
+/home/nds/files/workspace/ER/source/object_room1.h:
+
+/home/nds/files/workspace/ER/build/start_main.h:
+
+/home/nds/files/workspace/ER/build/start_sub.h:
+
+/home/nds/files/workspace/ER/build/end_main.h:
+
+/home/nds/files/workspace/ER/build/end_sub.h:
 
 /opt/devkitPro/libnds/include/maxmod9.h:
 
@@ -165,5 +215,3 @@ Game_room1.o: /home/nds/files/workspace/ER/source/Game_room1.c \
 /home/nds/files/workspace/ER/build/soundbank_bin.h:
 
 /home/nds/files/workspace/ER/source/irq_management.h:
-
-/home/nds/files/workspace/ER/build/background_room1_main.h:

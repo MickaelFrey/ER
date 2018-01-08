@@ -1,21 +1,15 @@
-#include <nds.h>
-#include <stdio.h>
-//#include "math.h"
-#include <math.h>
+/*
+ * Game_room1.c
+ *
+ * Description in Game_room1.h
+ *
+ *  Created on: Dec 08, 2018
+ *      Author: Anthony Cavin and Mickaël Frey
+ *       Place: EPFL
+ *        Game: Escape room
+ */
 
-#include "Graphics.h"
 #include "Game_room1.h"
-
-#include <maxmod9.h>
-#include "soundbank.h"
-#include "soundbank_bin.h"
-
-#include "irq_management.h"
-
-#include "background_room1_main.h"
-
-#define MORSE_CODE_LENGTH_SEC	4
-
 
 void play_hotpot(){
 	//Angle_step determine the step of rotation of the carrots in the hot pot
@@ -81,17 +75,23 @@ void play_hotpot(){
 }
 
 void play_radio(){
+	/*
+	 * Store information of the time when the player press the radio.
+	 * If the morse code is playing, the player can't play it again in
+	 * the same time.
+	 */
 	static int stored_sec = 0;
 	static bool play = true;
 
+	if(min * 60 + sec - stored_sec > MORSE_CODE_LENGTH_SEC){
+		play = true;
+	}
+
 	if(play){
-		// Start sound effect.
+		// Start sound effect. (Morse code /-/..../.-././. (T/H/R/E/E))
 		mmEffect(SFX_MORSECODE);
 		stored_sec = min * 60 + sec;
 		play = false;
-	}
-	if(min * 60 + sec - stored_sec > MORSE_CODE_LENGTH_SEC){
-		play = true;
 	}
 }
 
