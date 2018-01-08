@@ -27,7 +27,7 @@ void play_hotpot(){
 	rotateImage_main_BG2(128, 96, angle_middle, 0, 0);
 
 	while(true){
-		//Scan the keys and identify which key is held
+		//Scan the keys and identify which key is held or released
 		scanKeys();
 		u16 keys = keysHeld();
 		u16 keys_up = keysUp();
@@ -36,12 +36,12 @@ void play_hotpot(){
 			/*
 			 * Image in BG3 is the carrots in the center.
 			 * The 128x128 picture is rotating around the center of the
-			 * Screen;
+			 * screen;
 			 * Center of rotation: x = 256/2 = 128 px, y = 192/2 = 96 px
 			 * Shift: tx = (256-128)/2 = 64, ty = (192-128)/2 = 32
 			 */
 			rotateImage_main_BG3(128, 96, angle_center, 64, 32);
-			angle_center+=angle_step;
+			angle_center += angle_step;
 		}
 		if((keys & KEY_L)){
 			/*
@@ -52,11 +52,11 @@ void play_hotpot(){
 			 * Shift: tx = ty = 0;
 			 */
 			rotateImage_main_BG2(128, 96, angle_middle, 0, 0);
-			angle_middle+=angle_step;
+			angle_middle += angle_step;
 		}
-		if(keys_up & KEY_L ||keys_up & KEY_R){
+		if(keys_up & KEY_L || keys_up & KEY_R){
 			/*
-			 * The rotation is inversed everytime that L1 and R1 are released
+			 * The rotation is reversed everytime that L and R are released
 			 * to disturb the game
 			 */
 			angle_step = -angle_step;
@@ -88,7 +88,7 @@ void play_radio(){
 	}
 
 	if(play){
-		// Start sound effect. (Morse code /-/..../.-././. (T/H/R/E/E))
+		//Start sound effect (Morse code /-/..../.-././. (/T/H/R/E/E))
 		mmEffect(SFX_MORSECODE);
 		stored_sec = min * 60 + sec;
 		play = false;
@@ -166,7 +166,7 @@ bool play_locker(int code[5]){
 			if((keypressed >= 0) && (keypressed < 12)){	//Save the pressed key
 				if(slot_locker < 5){
 					locker[slot_locker] = keypressed;
-					slot_locker++;	//Increase the index in order to save
+					slot_locker++;	//Increase the index in order to save the next one
 				}
 			}else if(keypressed == 13){		//Clear slot-by-slot the locker
 				if(slot_locker > 0){
@@ -193,7 +193,11 @@ bool play_locker(int code[5]){
 				}
 			}
 
-			//Display the pressed key(s) on the locker and paint it(them) in accordance to the state of check (unknown -> black; true -> green; wrong -> red)
+			/*
+			 * Display the pressed key(s) on the locker and paint it(them)
+			 * in accordance to the state of check
+			 * (unknown -> black; true -> green; wrong -> red)
+			 */
 			display_digits(locker, check);
 
 			//Avoid multi-filling of the locker by waiting that the touchscreen is untouched

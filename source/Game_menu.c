@@ -16,12 +16,15 @@
  */
 bool readGameState()
 {
+	//state need to be cast for fscanf function
+	int temp2cast;
 	//Open the file in read mode
 	FILE* file = fopen("/GameState.txt","r");
 	if(file != NULL)
 	{
 		//Read the value and put it into the global variables
-		fscanf(file,"%i %i %i %i %i %i\n",&min, &sec, &state, &bg_h, &bg_v, &door_unlocked);
+		fscanf(file,"%i %i %i %i %i %i\n",&min, &sec, &temp2cast, &bg_h, &bg_v, &door_unlocked);
+		state = (State)temp2cast;
 		// close the file
 		fclose(file);
 		return true;
@@ -37,12 +40,15 @@ bool readGameState()
  */
 bool writeGameState()
 {
+	//state need to be cast for fscanf function
+	int temp2cast;
 	//Open the file in write mode to overwrite
 	FILE* file = fopen("/GameState.txt","w+");
 	if(file != NULL)
 	{
+		temp2cast = (int)state;
 		//Print the value in the file
-		fprintf(file,"%i %i %i %i %i %i\n", min, sec, state, bg_h, bg_v, door_unlocked);
+		fprintf(file,"%i %i %i %i %i %i\n", min, sec, temp2cast, bg_h, bg_v, door_unlocked);
 		//Close the file
 		fclose(file);
 		return true;

@@ -17,9 +17,14 @@
 
 #include "Game.h"
 
-//Read file GameState.txt. Return true if the file is correctly open
+/*
+ * Read file GameState.txt. Return true if the file is correctly open
+ */
 bool readGameState();
-//Write file GameState.txt. Return true if the file is correctly open
+
+/*
+ * Write file GameState.txt. Return true if the file is correctly open
+ */
 bool writeGameState();
 
 #endif /* BREAK_H_ */

@@ -10,6 +10,7 @@
  */
 
 #include "Game.h"
+
 /*
  * Define the game corresponding to MenuStart
  */
@@ -57,7 +58,7 @@ bool play_Room1(){
 	int code_door[5] = {0, 7, 7, 3, 11};
 	int code_trap[5] = {3, 8, 10, 4, 2};
 
-	//Declare objects that can be touche
+	//Declare objects that can be touched
 	struct Object obj[NUM_OF_OBJECT];
 	object_type obj_touched = none;
 	configure_objects(obj);
@@ -91,36 +92,36 @@ bool play_Room1(){
 		//Read the touchscreen
 		touchRead(&touch);
 
-		// Assign shift registers (they are not readable)
+		//Assign shift registers (they are not readable)
 		REG_BG0HOFS_SUB = bg_h;
 		REG_BG0VOFS_SUB = bg_v;
 
 		if(door_unlocked){
 			//Update local variables that track the shifting
 			if(keys & KEY_DOWN){
-				//shifting vertically from down to up
-				bg_v+=view_speed;
+				//Shifting vertically from down to up
+				bg_v += view_speed;
 			}
 			if(keys & KEY_LEFT){
-				//shifting horizontally from left to right
-				bg_h-=view_speed;
+				//Shifting horizontally from left to right
+				bg_h -= view_speed;
 			}
 			if(keys & KEY_UP){
-				//shifting vertically from up to down
-				bg_v-=view_speed;
+				//Shifting vertically from up to down
+				bg_v -= view_speed;
 			}
 			if(keys & KEY_RIGHT){
-				//shifting horizontally from right to left
-				bg_h+=view_speed;
+				//Shifting horizontally from right to left
+				bg_h += view_speed;
 			}
 		}
-		// Limit the shift according to the size of the background
+		//Limit the shift according to the size of the background
 		if(bg_h < 0) 	bg_h = 0;
 		if(bg_h > 255)	bg_h = 255;
 		if(bg_v < 0) 	bg_v = 0;
 		if(bg_v > 319)	bg_v = 319;
 
-		//The Key A hide the additionnal information pop-up in the screens
+		//The Key X hide the additional information pop-up in the screens
 		if(keys & KEY_X ){
 			hide_sprite = false;
 			reset_room1_gfx();
@@ -131,7 +132,7 @@ bool play_Room1(){
 
 		//Identify if an object is touched and run the corresponding function
 		if(touch.px | touch.py){
-			obj_touched = object_touched(obj, touch.px+bg_h, touch.py+bg_v);
+			obj_touched = object_touched(obj, touch.px + bg_h, touch.py + bg_v);
 			switch(obj_touched){
 				case first_msg: {
 					hide_sprite = true;
@@ -198,7 +199,7 @@ bool play_Room1(){
 		swiWaitForVBlank();
 
 		if(trap_unlocked){
-			return true; // Return true; the room is solved
+			return true; //Return true; the room is solved
 		}
 	}
 }
@@ -208,8 +209,6 @@ bool play_Room1(){
  */
 void play_MenuEnd(){
 	int i, j, k, number, timer[5];
-
-
 
 	timer[0] = min / 10;
 	timer[1] = min % 10;

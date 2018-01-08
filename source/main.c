@@ -15,7 +15,7 @@
  * Global variables that store all necessary variables to describe the
  * state of the game
  */
-int min = 0, sec = 0, bg_h=0, bg_v=0, door_unlocked = 0;
+int min = 0, sec = 0, bg_h = 0, bg_v = 0, door_unlocked = 0;
 State state = MenuStart;
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ int main(void) {
 				/*
 				 * Check if the player want to initialize a new game.
 				 * If the player press "continue" all the state of
-				 * the previous game are download from the file
+				 * the previous game are loaded from the file
 				 * GameState.txt to continue in this state.
 				 */
 				is_new_game = play_MenuStart();
@@ -68,7 +68,7 @@ int main(void) {
 					//If room solved go to Menu end with new graphics
 					state=MenuEnd;
 					configure_MenuEnd_gfx();
-					//Show time needed to solve the room
+					//Show time used to solve the room
 					play_MenuEnd();
 				}else{
 					//If player press start button return to start menu
@@ -77,7 +77,7 @@ int main(void) {
 				break;
 			}
 			case MenuEnd:{
-				//Wait for the player to touch the exit button
+				//Wait for the player to touch the EXIT button
 				touchRead(&touch);
 				if((touch.px > 75) && (touch.px < 174)){
 					if((touch.py > 128) && (touch.py < 157)){
@@ -87,11 +87,11 @@ int main(void) {
 				break;
 			}
 			default: break;
-		}	// End of switch
+		}	//End of switch
 
 		swiWaitForVBlank();
-	}	// End of while
+	}	//End of while
 
 	return 0;
 
-}	// End of main
+}	//End of main

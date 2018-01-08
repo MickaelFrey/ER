@@ -1,7 +1,7 @@
 /*
  * object_room1.h
  *
- * Manage the objects that can be touche in the game.
+ * Manage the objects that can be touched in the game.
  *
  *  Created on: Dec 08, 2018
  *      Author: Anthony Cavin and Mickaël Frey

@@ -18,6 +18,7 @@ void configure_MenuStart_gfx(){
 	/*
 	 * Main 2D engine
 	 */
+
 	//Enable a proper RAM memory bank for the main engine
 	VRAM_A_CR = VRAM_ENABLE | VRAM_A_MAIN_BG;
 	//Configure the main engine in mode 5 (2D) and activate BG2
@@ -32,7 +33,6 @@ void configure_MenuStart_gfx(){
 	REG_BG2PD = 256;
 
 	swiCopy(start_mainBitmap, BG_GFX, start_mainBitmapLen/2);
-
 
 	/*
 	 * Sub 2D engine:
@@ -53,7 +53,6 @@ void configure_MenuStart_gfx(){
 
 	swiCopy(start_subBitmap, BG_GFX_SUB, start_mainBitmapLen/2);
 }
-
 
 /*
  * Configure the graphics settings for the Room1
@@ -100,50 +99,47 @@ void configure_room1_gfx(){
 	 * background_room1, 64x64 tiles + palette 256 entries (8 bit/px) + map
 	 */
 
-	// Activate sub engine and background 0 in tiled mode using 64x64 map
+	//Configure the sub engine in mode 5 (2D) and activate BG0 (64x64 tiles) and BG2
 	VRAM_C_CR = VRAM_ENABLE | VRAM_C_SUB_BG;
 	REG_DISPCNT_SUB  = MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG2_ACTIVE;
 	BGCTRL_SUB[0] = BG_COLOR_256 | BG_MAP_BASE(0) | BG_TILE_BASE(1) | BG_64x64;
-	//BGCTRL_SUB[1] = BG_COLOR_256 | BG_MAP_BASE(4) | BG_TILE_BASE(5) | BG_32x32;
 	BGCTRL_SUB[2] = BG_BMP_BASE(5) | BgSize_B8_256x256;
 
 	// Copy tiles and palette to the corresponding place
 	swiCopy(background_room1Tiles, BG_TILE_RAM_SUB(1), background_room1TilesLen/2);
 	swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
 
-	//Set up the priority of the backgrounds in order to display BG0
+	//Set up the priority of the backgrounds in order to display BG0 on top of BG2
 	BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
 	BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
 
-	// Copy map to the map base(s): As the used map is 4 times a standard one,
-	// we will need 4 map bases (i.e. 64x64 components * 16 bits = 8 KB)
+	/*
+	 * Copy map to the map base(j): As the used map is 4 times a standard one,
+	 * we will need 4 map bases (i.e. 64x64 components * 16 bits = 8 KB)
+	 */
 
-	// TOP LEFT quadrant of the image in first map base
+	//TOP LEFT quadrant of the image in first map base
 	int i;
 	for(i=0; i<32; i++)
 		dmaCopy(&background_room1Map[i*64], &BG_MAP_RAM_SUB(0)[i*32], 64);
-	// TOP RIGHT quadrant of the image in second map base
+	//TOP RIGHT quadrant of the image in second map base
 	for(i=0; i<32; i++)
 		dmaCopy(&background_room1Map[i*64+32], &BG_MAP_RAM_SUB(1)[i*32], 64);
 
-	// BOTTOM LEFT quadrant of the image in third map base
+	//BOTTOM LEFT quadrant of the image in third map base
 	for(i=0; i<32; i++)
 		dmaCopy(&background_room1Map[(i+32)*64], &BG_MAP_RAM_SUB(2)[i*32], 64);
 
-	// BOTTOM RIGHT quadrant of the image in fourth map base
+	//BOTTOM RIGHT quadrant of the image in fourth map base
 	for(i=0; i<32; i++)
 		dmaCopy(&background_room1Map[(i+32)*64+32], &BG_MAP_RAM_SUB(3)[i*32], 64);
-
-	// BOTTOM LEFT quadrant of the image in third map base
-	//for(i=0; i<32; i++)
-		//dmaCopy(&mergedsub_room1Map[(i+64)*64], &BG_MAP_RAM_SUB(4)[i*32], 64);
 }
 
 /*
  * reset the graphics settings for the Room1
  */
 void reset_room1_gfx(){
-	// Pallette of the background was overwritten by the carrots BG
+	//Pallette of the background was overwritten by the carrots BG
 	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
 
 	//Configure BG0 in tile mode for background_room1_main (don't overlap digits)
@@ -159,7 +155,6 @@ void reset_room1_gfx(){
 	swiCopy(background_room1Pal, BG_PALETTE_SUB, background_room1PalLen/2);
 	BGCTRL_SUB[0] = (BGCTRL_SUB[0] & 0xFFFC) | 0;
 	BGCTRL_SUB[2] = (BGCTRL_SUB[2] & 0xFFFC) | 1;
-
 }
 /*
  * Configure the graphics settings in order to display the first message
@@ -170,7 +165,7 @@ void display_first_msg(){
 	 * So, we just have to configure BG3.
 	 */
 
-	//morse in VRAM B just after the tile
+	//morse in VRAM B
 	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_256x256;
 
     //Affine Marix Transformation
@@ -186,7 +181,6 @@ void display_first_msg(){
 	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 2;
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;
 	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
-
 }
 
 /*
@@ -198,7 +192,7 @@ void display_stars(){
 	 * So, we just have to configure BG3.
 	 */
 
-	//morse in VRAM B just after the tile
+	//morse in VRAM B
 	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_256x256;
 
     //Affine Marix Transformation
@@ -216,19 +210,20 @@ void display_stars(){
 	BGCTRL[3] = (BGCTRL[3] & 0xFFFC) | 0;
 
 }
+
 /*
  * Configure the graphics settings in order to display the hot pot
  */
 void display_hotpot(){
 
 	//Configure BG0, BG2 and BG3
-	// TILE in VRAM A
+	//TILE in VRAM A
 	BGCTRL[1] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(31) | BG_TILE_BASE(3);
 
-	// carrot_middle in VRAM D
+	//carrot_middle in VRAM D
 	BGCTRL[2] = BG_BMP_BASE(24) | BgSize_B16_256x256;
 
-	// carrot_center in VRAM A just after the tile
+	//carrot_center in VRAM A just after the tile
 	BGCTRL[3] = BG_BMP_BASE(4) | BgSize_B16_128x128;
 
 	//Copy the tiles and the palette of the hot pot background
@@ -236,9 +231,9 @@ void display_hotpot(){
 	swiCopy(carrot_backTiles, BG_TILE_RAM(3), carrot_backTilesLen/2);
 	swiCopy(carrot_backPal, BG_PALETTE, carrot_backPalLen/2);
 
-	// Copy middle carrot in VRAM D
+	//Copy middle carrot in VRAM D
 	swiCopy(carrot_middleBitmap, BG_BMP_RAM(24), carrot_middleBitmapLen/2);
-	// Copy center carrot in VRAM B just after the TILE of carrots back
+	//Copy center carrot in VRAM B just after the TILE of carrots back
 	swiCopy(carrot_centerBitmap, BG_BMP_RAM(4), carrot_centerBitmapLen/2);
 
     //Affine Marix Transformation for BG2 and BG3
@@ -267,10 +262,10 @@ void display_hotpot(){
  */
 void exit_display_hotpot(){
 
-	// Pallette of the background was overwritten by the carrots BG
+	//Pallette of the background was overwritten by the carrots BG
 	swiCopy(background_room1_mainPal, BG_PALETTE, background_room1_mainPalLen/2);
 
-	// Assign priority to display background_room1_main
+	//Assign priority to display background_room1_main
 	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
 	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 1;
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 2;
@@ -280,7 +275,7 @@ void exit_display_hotpot(){
 	rotateImage_main_BG3(0, 0, 0, 0, 0);
 	rotateImage_main_BG2(0, 0, 0, 0, 0);
 
-	// Enable the sprite
+	//Enable the sprite
 	oamEnable(&oamMain);
 }
 
@@ -331,8 +326,10 @@ void display_locker(){
 	//locker in VRAM B just after the tile
 	BGCTRL[3] = BG_BMP_BASE(8) | BgSize_B16_256x256;
 
-	 /* Make the background transparent with the twelfth part of the digits
-	 * which are already in the VRAM A */
+	 /*
+	  * Make the background transparent with the twelfth part of the digits
+	  * which are already in the VRAM A
+	  */
 	int tile;
 	for(tile = 0; tile <1024; tile++) BG_MAP_RAM(10)[tile] = 24*12;
 
@@ -358,7 +355,6 @@ void display_locker(){
 	 */
 
 	//Affine Marix Transformation
-
 	REG_BG2PA_SUB = 256;
 	REG_BG2PC_SUB = 0;
 	REG_BG2PB_SUB = 0;
@@ -385,9 +381,9 @@ void display_digits(int locker[], Check check){
 				BG_MAP_RAM(10)[(j + 9)*32 + k + 2+i*6] = (u16)(j*4+k)+24*number;
 	}
 
-	if(check == unknown) BG_PALETTE[1] = ARGB16(1,0,0,0);
-	if(check == correct) BG_PALETTE[1] = ARGB16(1,0,31,0);
-	if(check == wrong) BG_PALETTE[1] = ARGB16(1,31,0,0);
+	if(check == unknown) BG_PALETTE[1] = ARGB16(1,0,0,0);	//Digits painted in black
+	if(check == correct) BG_PALETTE[1] = ARGB16(1,0,31,0);	//Digits painted in green
+	if(check == wrong) BG_PALETTE[1] = ARGB16(1,31,0,0);	//Digits painted in red
 }
 
 /*
@@ -395,42 +391,43 @@ void display_digits(int locker[], Check check){
  */
 void rotateImage_main_BG2(int x, int y, float angle_rads, int tx, int ty)
 {
-	// Compute the distance from rotation point to system origin
+	//Compute the distance from rotation point to system origin
 	float r = sqrt(x*x + y*y);
 
-	// Determine the rotation angle alpha of the image
+	//Determine the rotation angle alpha of the image
 	float alpha = atan((float)x/(float)y)+angle_rads;
 
-	// Image rotation matrix
+	//Image rotation matrix
 	REG_BG2PA = cos(angle_rads)*256;
 	REG_BG2PB = sin(angle_rads)*256;
 	REG_BG2PC = -sin(angle_rads)*256;
 	REG_BG2PD = cos(angle_rads)*256;
 
-	// Image translation
+	//Image translation
 	REG_BG2X = (x-r*sin(alpha))*256-(tx<<8);
 	REG_BG2Y = (y-r*cos(alpha))*256-(ty<<8);
 
 }
+
 /*
  *	Rotate Image for BG2 with the main engine.
  */
 void rotateImage_main_BG3(int x, int y, float angle_rads, int tx, int ty)
 {
 
-	// Compute the distance from rotation point to system origin
+	//Compute the distance from rotation point to system origin
 	float r = sqrt(x*x + y*y);
 
-	// Determine the rotation angle alpha of the image
+	//Determine the rotation angle alpha of the image
 	float alpha = atan((float)x/(float)y)+angle_rads;
 
-	// Image rotation matrix
+	//Image rotation matrix
 	REG_BG3PA = cos(angle_rads)*256;
 	REG_BG3PB = sin(angle_rads)*256;
 	REG_BG3PC = -sin(angle_rads)*256;
 	REG_BG3PD = cos(angle_rads)*256;
 
-	// Image translation
+	//Image translation
 	REG_BG3X = (x-r*sin(alpha))*256-(tx<<8);
 	REG_BG3Y = (y-r*cos(alpha))*256-(ty<<8);
 
@@ -443,6 +440,7 @@ void configure_MenuEnd_gfx(){
 	/*
 	 * Main 2D engine
 	 */
+
 	//Enable a proper RAM memory bank for the main engine
 	VRAM_A_CR = VRAM_ENABLE | VRAM_A_MAIN_BG;
 	//Configure the main engine in mode 5 (2D) and activate BG0 and BG2
@@ -470,7 +468,7 @@ void configure_MenuEnd_gfx(){
 
 	swiCopy(end_mainBitmap, BG_BMP_RAM(2), end_mainBitmapLen/2);
 
-	// Assign priority to display BG0 (digits) on top of BG3 (locker)
+	//Assign priority to display BG0 (digits) on top of BG3 (locker)
 	BGCTRL[0] = (BGCTRL[0] & 0xFFFC) | 0;
 	BGCTRL[1] = (BGCTRL[1] & 0xFFFC) | 2;
 	BGCTRL[2] = (BGCTRL[2] & 0xFFFC) | 1;

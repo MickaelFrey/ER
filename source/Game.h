@@ -1,7 +1,7 @@
 /*
  * Game.h
  *
- * Top level function called by main.c to enter in the menu (start/end)
+ * Top level function called by main.c to enter in the menu (Start/End)
  * or to play room 1
  *
  *

@@ -55,6 +55,12 @@ u16* gfx;
  * Configure the graphics settings in order to display the hot pot
  */
 void display_hotpot();
+
+/*
+ * Configure the graphics when exiting the hot pot
+ */
+void exit_display_hotpot();
+
 /*
  * Configure the graphics settings for the MenuStart
  */
