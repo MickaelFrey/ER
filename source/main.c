@@ -84,6 +84,10 @@ int main(void) {
 						state = MenuStart;
 					}
 				}
+				//Wait that the touchscreen is untouched
+				while(touch.px | touch.py){
+					touchRead(&touch);
+				}
 				break;
 			}
 			default: break;
